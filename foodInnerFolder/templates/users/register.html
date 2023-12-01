@@ -1,11 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'index.css')}}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{title}}</title>
 </head>
 <body>
     <p>hey register</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class={{category}}>{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="POST" action="" novalidate>
+        {{form.hidden_tag()}}
+        {{form.username.label}}
+        {{form.username}}
+        {{form.email.label}}
+        {{form.email}}
+        {{form.password.label}}
+        {{form.password}}
+        {{form.confirm_password.label}}
+        {{form.confirm_password}}
+        {{form.submit}}
+    </form>
+
+    {% for field, errors in form.errors.items() %}
+            <small class="form-text text-muted ">
+                {{field}}
+                {{ ', '.join(errors) }}
+            </small>
+            {% endfor %}
 </body>
 </html>

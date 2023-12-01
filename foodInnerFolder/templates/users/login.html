@@ -1,4 +1,29 @@
-{% extends 'index.html' %}
+{% extends 'layout.html' %}
 {% block content %}
-<p>hey man what's good?</p>
+    <h1>Login Page</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class={{category}}>{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="POST" action="" novalidate>
+        {{form.hidden_tag()}}
+        {{form.email.label}}
+        {{form.email}}
+            {% if form.email.errors %}
+                {% for error in form.email.errors %}
+                    {{error}}
+                {% endfor %}
+            {% endif %}
+        {{form.password.label}}
+        {{form.password}}
+            {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                        {{error}}
+                    {% endfor %}
+                {% endif %}
+        {{form.submit}}
+    </form>
 {% endblock content %}

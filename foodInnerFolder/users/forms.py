@@ -2,13 +2,18 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from foodInnerFolder.models import User
-from wtforms import PasswordField, StringField, SubmitField
+from wtforms import PasswordField,StringField,SubmitField,TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()])
     password = PasswordField('Password',validators=[DataRequired()])
     submit = SubmitField('Login')
+
+class PostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Post')
 
 class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password',validators=[DataRequired(),EqualTo('password')])

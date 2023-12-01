@@ -1,8 +1,30 @@
 {% extends 'layout.html' %}
 {% block content %}
 <h1>Home page</h1>
-{% for user in users %}
-{{user}}
+{% for post in posts %}
+    <img src="{{url_for('static', filename = 'profile_pics/' + post.author.image_file)}}" style="height:50px">
+    <a href="{{url_for('users.user_posts', username=post.author.username)}}">{{post.author.username}}</a>
+    {{post.datePosted.strftime('%Y-%m-%d')}}
+    <a href="{{url_for('users.post',post_id=post.id)}}">{{post.title}}</a>
+    {{post.content}}
+    {% if post.author == current_user %}
+    <a href="{{url_for('users.update_post',post_id=post.id)}}">update that shit</a>
+    <form action="{{url_for('users.delete_post',post_id=post.id)}}" method="POST">
+        <input type="submit" value="delete">
+    </form>
+    {% endif %}
+<br>
+{% endfor %}
+{% for page_num in posts.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=1) %}
+    {% if page_num %}
+        {% if posts.page == page_num %}
+            <a href="{{url_for('main.home',page=page_num)}}" style="font-size:40px;">{{page_num}}</a>
+        {% else %}
+            <a href="{{url_for('main.home',page=page_num)}}">{{page_num}}</a>
+        {% endif %}
+    {% else %}
+        ...
+    {% endif %}
 {% endfor %}
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}

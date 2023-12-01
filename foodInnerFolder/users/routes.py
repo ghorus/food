@@ -1,8 +1,8 @@
-from flask import Blueprint,flash,redirect,render_template,request,url_for
+from flask import abort,Blueprint,flash,redirect,render_template,request,url_for
 from flask_login import login_user,login_required,logout_user,current_user
 from foodInnerFolder import app, bcrypt, db
-from foodInnerFolder.models import User 
-from foodInnerFolder.users.forms import LoginForm,RegistrationForm,UpdateAccountForm
+from foodInnerFolder.models import Post,User 
+from foodInnerFolder.users.forms import LoginForm,PostForm,RegistrationForm,UpdateAccountForm
 import os
 from PIL import Image
 import secrets
@@ -30,6 +30,16 @@ def account():
     image_file = url_for('static', filename="profile_pics/" + current_user.image_file)
     return render_template('users/account.html',form=form,image_file=image_file, title='Account')
 
+@users.route('/post/<post_id>/delete',methods=['POST'])
+def delete_post(post_id):
+    post = Post.query.get(post_id)
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash('Your post has been deleted.','success')
+    return redirect(url_for('main.home'))
+
 @users.route("/login",methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -51,6 +61,23 @@ def logout():
     logout_user()
     return redirect(url_for('main.home'))
 
+@users.route("/post/new",methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash("Your post has been created.",'success')
+        return redirect(url_for('main.home'))
+    return render_template('users/create_post.html',title='New Post',form=form)
+
+@users.route('/post/<post_id>')
+def post(post_id):
+    post = Post.query.get(post_id)
+    return render_template('post.html', title=post.title, post=post)
+
 @users.route("/register",methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -64,6 +91,32 @@ def register():
         flash('Your account has been created.','success')
         return redirect(url_for('users.login'))
     return render_template('users/register.html',form=form,title='Register')
+
+@users.route('/post/<post_id>/update',methods=['GET', 'POST'])
+def update_post(post_id):
+    post = Post.query.get(post_id)
+    if post.author != current_user:
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your post has been updated!','success')
+        return redirect(url_for('users.post',post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('users/update_post.html',title='Update Post',form=form,form_legend="Update Post")
+
+@users.route('/user/<username>')
+def user_posts(username):
+    page = request.args.get('page',1,type=int)
+    user = User.query.filter_by(username=username).first()
+    posts = Post.query.filter_by(author=user)\
+        .order_by(Post.datePosted.desc())\
+        .paginate(page=page,per_page=8)
+    return render_template('user_posts.html',posts=posts,user=user)
 
 def save_picture(form_picture):
     _, f_ext = os.path.splitext(form_picture.filename)

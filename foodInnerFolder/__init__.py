@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 import os 
@@ -17,6 +18,12 @@ login_manager = LoginManager(app)
 #in order to view
 login_manager.login_view = 'users.login'
 login_manager.login_message_category = "info"
+app.config['MAIL_SERVER'] = 'smtp.elasticemail.com'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'nguyen.victor4@gmail.com'
+app.config['MAIL_PASSWORD'] = 'CED7D2CCE58243B1B8012FECDEDB519C464C'
+mail = Mail(app)
 
 from foodInnerFolder.foodReviews.routes import foodReviewz
 from foodInnerFolder.main.routes import main

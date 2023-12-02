@@ -1,6 +1,8 @@
 from datetime import datetime
 from flask_login import UserMixin
-from foodInnerFolder import db,login_manager
+from foodInnerFolder import app,db,login_manager
+from itsdangerous import URLSafeTimedSerializer as Serializer
+import secrets
 
 #loads the current user
 @login_manager.user_loader
@@ -14,6 +16,19 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable = False)
     username = db.Column(db.String(20),unique=True,nullable=False)
     posts = db.relationship('Post',backref='author',lazy=True)
+
+    def get_reset_token(self):
+        s = Serializer(app.config['SECRET_KEY'])
+        return s.dumps({'user_id':self.id},salt='something')
+    
+    @staticmethod
+    def verify_reset_token(token,expires_sec=20):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token,salt='something',max_age=expires_sec)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
 
     def __repr__(self):
         return f"User('{self.username},'{self.email}','{self.password},'{self.image_file})"

@@ -17,14 +17,6 @@
                     {{error}}
                 {% endfor %}
             {% endif %}
-        {{form.password.label}}
-        {{form.password}}
-            {% if form.password.errors %}
-                    {% for error in form.password.errors %}
-                        {{error}}
-                    {% endfor %}
-                {% endif %}
         {{form.submit}}
     </form>
-    <a href="{{ url_for('users.reset_request')}}">Forgot Password?</a>
 {% endblock content %}

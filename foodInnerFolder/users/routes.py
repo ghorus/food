@@ -1,8 +1,10 @@
 from flask import abort,Blueprint,flash,redirect,render_template,request,url_for
 from flask_login import login_user,login_required,logout_user,current_user
-from foodInnerFolder import app, bcrypt, db
+from flask_mail import Message
+from foodInnerFolder import app, bcrypt, db, mail
 from foodInnerFolder.models import Post,User 
-from foodInnerFolder.users.forms import LoginForm,PostForm,RegistrationForm,UpdateAccountForm
+from foodInnerFolder.users.forms import (LoginForm,PostForm,RegistrationForm,RequestResetForm,
+                                         ResetPasswordForm,UpdateAccountForm)
 import os
 from PIL import Image
 import secrets
@@ -91,6 +93,45 @@ def register():
         flash('Your account has been created.','success')
         return redirect(url_for('users.login'))
     return render_template('users/register.html',form=form,title='Register')
+
+@users.route('/reset_password',methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_email(user)
+        flash('An email has been sent with instructions to reset your password.')
+        return redirect(url_for('users.login'))
+    return render_template('users/reset_request.html',form = form,title="Reset Password")
+
+@users.route('/reset_password/<token>',methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    user = User.verify_reset_token(token)
+    if not user:
+        flash('That token is invalid or expired.','warning')
+        return redirect(url_for('users.reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_pw
+        db.session.commit()
+        flash('Your password has been updated.','success')
+        return redirect(url_for('users.login'))
+    return render_template('users/reset_token.html',form = form,title="Reset Password")
+
+def send_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request', sender='nguyen.victor4@gmail.com',recipients=[user.email])
+    msg.body = f'''
+    To reset, please click on the following link:
+    {url_for('users.reset_token',salt='something',token=token,_external=True)}
+    If you didn't make this request, then you can simply ignore this email and no changes will be made.
+    '''
+    mail.send(msg)
 
 @users.route('/post/<post_id>/update',methods=['GET', 'POST'])
 def update_post(post_id):

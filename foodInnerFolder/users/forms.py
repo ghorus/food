@@ -31,6 +31,19 @@ class RegistrationForm(FlaskForm):
         if email:
             raise ValidationError('That email is already taken.')
 
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(),Email()])
+    submit = SubmitField('Request Password Reset')
+    def validate_email(self, email):
+        email = User.query.filter_by(email=email.data).first()
+        if not email:
+            raise ValidationError('There is no account for this email.')
+
+class ResetPasswordForm(FlaskForm):
+    confirm_password = PasswordField('Confirm Password',validators=[DataRequired(),EqualTo('password')])
+    password = PasswordField('Password',validators=[DataRequired(),Length(min=2, max=15)])
+    submit = SubmitField('Reset Password')
+
 class UpdateAccountForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()])
     picture = FileField('Update Profile Picture',validators=[FileAllowed(['jpg','png'])])

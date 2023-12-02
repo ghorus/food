@@ -37,7 +37,7 @@ class Post(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200),nullable=False)
     content = db.Column(db.String(2000),nullable=False)
-    datePosted = db.Column(db.DateTime,default=datetime.now(),nullable=False)
+    datePosted = db.Column(db.DateTime,default=datetime.utcnow,nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
 
     def __repr__(self):

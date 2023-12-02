@@ -1,19 +1,30 @@
 {% extends 'layout.html' %}
 {% block content %}
-<h1>Home page</h1>
-{% for post in posts %}
-    <img src="{{url_for('static', filename = 'profile_pics/' + post.author.image_file)}}" style="height:50px">
-    <a href="{{url_for('users.user_posts', username=post.author.username)}}">{{post.author.username}}</a>
-    {{post.datePosted.strftime('%Y-%m-%d')}}
-    <a href="{{url_for('users.post',post_id=post.id)}}">{{post.title}}</a>
-    {{post.content}}
-    {% if post.author == current_user %}
-    <a href="{{url_for('users.update_post',post_id=post.id)}}">update that shit</a>
-    <form action="{{url_for('users.delete_post',post_id=post.id)}}" method="POST">
-        <input type="submit" value="delete">
-    </form>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <p class={{category}}>{{message}}</p>
+        {% endfor %}
     {% endif %}
-<br>
+{% endwith %}
+{% for post in posts %}
+    <section class="post">
+        <img class="postPic" src="{{url_for('static', filename = 'profile_pics/' + post.author.image_file)}}">
+        <section>
+            <div class="postUserTime">
+                <a class="postUsername" href="{{url_for('users.user_posts', username=post.author.username)}}">{{post.author.username}}</a>
+                <span class="postTime">{{post.datePosted.strftime('%m-%d-%Y @ %H:%M')}}</span>
+            </div>
+            <a href="{{url_for('users.post',post_id=post.id)}}"><h3 class="postTitle">{{post.title}}</h3></a>
+            <p class="postContent">{{post.content}}</p>
+            <!-- {% if post.author == current_user %}
+            <a href="{{url_for('users.update_post',post_id=post.id)}}">update that shit</a>
+            <form action="{{url_for('users.delete_post',post_id=post.id)}}" method="POST">
+                <input type="submit" value="delete">
+            </form>
+            {% endif %} -->
+        </section>
+    </section>
 {% endfor %}
 {% for page_num in posts.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=1) %}
     {% if page_num %}
@@ -26,11 +37,4 @@
         ...
     {% endif %}
 {% endfor %}
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <p class={{category}}>{{message}}</p>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
 {% endblock content %}

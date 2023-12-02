@@ -1,10 +1,9 @@
 {% extends 'layout.html' %}
 {% block content %}
-    {{user.username}}{{posts.total}}
+    {{user.username}}: {{posts.total}} posts total
     {% for post in posts %}
-        {{post.title}}
-        {{post.content}}
-        <br>
+        <a href="{{url_for('users.post',post_id=post.id)}}"><h3 class="postTitle">{{post.title}}</h3></a>
+        <p>{{post.content}}</p>
     {% endfor %}
     {% for page_num in posts.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=1) %}
     {% if page_num %}

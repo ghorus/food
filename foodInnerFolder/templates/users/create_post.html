@@ -1,21 +1,27 @@
 {% extends 'layout.html' %}
 {% block content %}
-<form method="POST" action="" enctype="multipart/form-data" novalidate>
-    {{form.hidden_tag()}}
-    {{form.title.label}}
-    {{form.title}}
-    {% if form.title.errors %}
-        {% for error in form.title.errors %}
-            {{error}}
-        {% endfor %}
-    {% endif %}
-    {{form.content.label}}
-    {{form.content}}
-    {% if form.content.errors %}
-        {% for error in form.content.errors %}
-            {{error}}
-        {% endfor %}
-    {% endif %}
-    {{form.submit}}
-</form>
+<section class="formContainer">
+    <form class="formInsideContainer" method="POST" action="" enctype="multipart/form-data" novalidate>
+        {{form.hidden_tag()}}
+        <h1 class="formTitle">Create your Post</h1>
+        <span class="hr"></span>
+        {{form.title.label(class_="formSubtitle")}}
+        {{form.title(class_="formInput")}}
+        {% if form.title.errors %}
+            {% for error in form.title.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.content.label(class_="formSubtitle")}}
+        {{form.content(class_="formInput formTextArea")}}
+        {% if form.content.errors %}
+            {% for error in form.content.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.submit(class_="formButton")}}
+    </form>
+</section>
 {% endblock content %}

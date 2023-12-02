@@ -61,6 +61,7 @@ def login():
 @users.route("/logout")
 def logout():
     logout_user()
+    flash("You've logged out.",'success')
     return redirect(url_for('main.home'))
 
 @users.route("/post/new",methods=['GET', 'POST'])
@@ -102,7 +103,7 @@ def reset_request():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         send_email(user)
-        flash('An email has been sent with instructions to reset your password.')
+        flash('An email has been sent with instructions to reset your password.','success')
         return redirect(url_for('users.login'))
     return render_template('users/reset_request.html',form = form,title="Reset Password")
 

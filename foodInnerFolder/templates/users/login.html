@@ -1,30 +1,35 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <h1>Login Page</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <p class={{category}}>{{message}}</p>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <form method="POST" action="" novalidate>
-        {{form.hidden_tag()}}
-        {{form.email.label}}
-        {{form.email}}
-            {% if form.email.errors %}
-                {% for error in form.email.errors %}
-                    {{error}}
+    <section class="formContainer">
+        <h1 class="formTitle">Login</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class={{category}}>{{message}}</p>
                 {% endfor %}
             {% endif %}
-        {{form.password.label}}
-        {{form.password}}
-            {% if form.password.errors %}
-                    {% for error in form.password.errors %}
-                        {{error}}
+        {% endwith %}
+        <form class="formInsideContainer" method="POST" action="" novalidate>
+            {{form.hidden_tag()}}
+            <span class="hr"></span>
+            {{form.email.label(class_='formSubtitle')}}
+            {{form.email(class_='formInput')}}
+                {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                        <p class="danger">{{error}}</p>
                     {% endfor %}
                 {% endif %}
-        {{form.submit}}
-    </form>
-    <a href="{{ url_for('users.reset_request')}}">Forgot Password?</a>
+            <span class="hr"></span>
+            {{form.password.label(class_='formSubtitle')}}
+            {{form.password(class_='formInput')}}
+                {% if form.password.errors %}
+                        {% for error in form.password.errors %}
+                            <p class="danger">{{error}}</p>
+                        {% endfor %}
+                    {% endif %}
+            <span class="hr"></span>
+            {{form.submit(class_='formButton')}}
+        </form>
+        <a href="{{ url_for('users.reset_request')}}">Forgot Password?</a>
+    </section>
 {% endblock content %}

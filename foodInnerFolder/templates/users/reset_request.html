@@ -1,22 +1,26 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <h1>Login Page</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <p class={{category}}>{{message}}</p>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <form method="POST" action="" novalidate>
-        {{form.hidden_tag()}}
-        {{form.email.label}}
-        {{form.email}}
-            {% if form.email.errors %}
-                {% for error in form.email.errors %}
-                    {{error}}
+    <section class="formContainer">
+        <h1 class="formTitle">Reset Your Password</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class={{category}}>{{message}}</p>
                 {% endfor %}
             {% endif %}
-        {{form.submit}}
-    </form>
+        {% endwith %}
+        <form class="formInsideContainer" method="POST" action="" novalidate>
+            <span class="hr"></span>
+            {{form.hidden_tag()}}
+            {{form.email.label(class_="formSubtitle")}}
+            {{form.email(class_="formInput")}}
+                {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                        <p class="danger">{{error}}</p>
+                    {% endfor %}
+                {% endif %}
+            <span class="hr"></span>
+            {{form.submit(class_="formButton")}}
+        </form>
+    </section>
 {% endblock content %}

@@ -2,7 +2,6 @@ from datetime import datetime
 from flask_login import UserMixin
 from foodInnerFolder import app,db,login_manager
 from itsdangerous import URLSafeTimedSerializer as Serializer
-import secrets
 
 #loads the current user
 @login_manager.user_loader
@@ -13,7 +12,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120),unique=True,nullable=False)
     id = db.Column(db.Integer, primary_key=True)
     image_file = db.Column(db.String(20),nullable=False,default='default.png')
-    password = db.Column(db.String(40), nullable = False)
+    password = db.Column(db.String(60), nullable = False)
     username = db.Column(db.String(20),unique=True,nullable=False)
     posts = db.relationship('Post',backref='author',lazy=True)
 

@@ -18,7 +18,7 @@ class PostForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password',validators=[DataRequired(),EqualTo('password')],render_kw={"placeholder": "Confirm password here*"})
     email = StringField('Email', validators=[DataRequired(),Email()],render_kw={"placeholder": "Input email here*"})
-    password = PasswordField('Password',validators=[DataRequired(),Length(min=8, max=40)],render_kw={"placeholder": "Your password here*"})
+    password = PasswordField('Password',validators=[DataRequired(),Length(min=8, max=35)],render_kw={"placeholder": "Your password here*"})
     submit = SubmitField('Sign Up')
     username = StringField('Username', validators=[DataRequired(), Length(min=5,max=20)],render_kw={"placeholder": "Create your usename here*"})
 
@@ -41,7 +41,7 @@ class RequestResetForm(FlaskForm):
 
 class ResetPasswordForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password',validators=[DataRequired(),EqualTo('password')])
-    password = PasswordField('Password',validators=[DataRequired(),Length(min=2, max=15)])
+    password = PasswordField('Password',validators=[DataRequired(),Length(min=8, max=35)])
     submit = SubmitField('Reset')
 
 class UpdateAccountForm(FlaskForm):

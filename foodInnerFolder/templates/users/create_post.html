@@ -5,6 +5,22 @@
         {{form.hidden_tag()}}
         <h1 class="formTitle">Create your Post</h1>
         <span class="hr"></span>
+        {{form.name.label(class_="formSubtitle")}}
+        {{form.name(class_="formInput")}}
+        {% if form.name.errors %}
+            {% for error in form.name.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.city.label(class_="formSubtitle")}}
+        {{form.city(class_="formInput")}}
+        {% if form.city.errors %}
+            {% for error in form.city.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
         {{form.title.label(class_="formSubtitle")}}
         {{form.title(class_="formInput")}}
         {% if form.title.errors %}
@@ -25,6 +41,14 @@
         {{form.rating(class_="formInput")}}
         {% if form.rating.errors %}
             {% for error in form.rating.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.picture.label(class_="formSubtitle")}}
+        {{form.picture(class_="formInput")}}
+        {% if form.picture.errors %}
+            {% for error in form.picture.errors %}
                 {{error}}
             {% endfor %}
         {% endif %}

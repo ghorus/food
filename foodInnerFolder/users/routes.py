@@ -69,7 +69,10 @@ def logout():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post( author=current_user,content=form.content.data,rating=form.rating.data,title=form.title.data)
+        picture_file = ""
+        if form.picture.data:
+            picture_file = save_post_picture(form.picture.data)
+        post = Post( author=current_user,city=form.city.data,content=form.content.data,name=form.name.data,picture=picture_file,rating=form.rating.data,title=form.title.data)
         db.session.add(post)
         db.session.commit()
         flash("Your post has been created.",'success')
@@ -160,6 +163,16 @@ def save_picture(form_picture):
     i.thumbnail(output_size)
     i.save(picture_path)
     return picture_fn
+
+def save_post_picture(form_picture):
+    _, f_ext = os.path.splitext(form_picture.filename)
+    random_hex = secrets.token_hex(8)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/post_pics',picture_fn)
+    i = Image.open(form_picture)
+    i.save(picture_path)
+    return picture_fn
+
 
 def send_email(user):
     token = user.get_reset_token()

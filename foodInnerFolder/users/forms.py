@@ -2,8 +2,8 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from foodInnerFolder.models import User
-from wtforms import IntegerField,PasswordField,StringField,SubmitField,TextAreaField
-from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
+from wtforms import BooleanField,IntegerField,PasswordField,StringField,SubmitField,TextAreaField
+from wtforms.validators import DataRequired, Length,NumberRange, EqualTo, Email, ValidationError
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()],render_kw={"placeholder": "example@example.com*"})
@@ -11,9 +11,13 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class PostForm(FlaskForm):
+    city = StringField('Restaurant City Location', validators=[DataRequired()],render_kw={"placeholder": "Input city of restaurant here*"})
     content = TextAreaField('Content', validators=[DataRequired()],render_kw={"placeholder": "Contents of post here*"})
-    rating = IntegerField('Rate out of 5',validators=[DataRequired()])
-    title = StringField('Food Item Name and/or Food Item Number', validators=[DataRequired()],render_kw={"placeholder": "Title of your post*"})
+    likes = BooleanField('Like')
+    name = StringField('Restaurant Name', validators=[DataRequired()],render_kw={"placeholder": "Name of restaurant here*"})
+    picture = FileField('Picture of Food',validators=[FileAllowed(['jpg','png'])])
+    rating = IntegerField('Rate out of 5',validators=[DataRequired(),NumberRange(max=5)])
+    title = StringField('Food Item Name and/or Number', validators=[DataRequired()],render_kw={"placeholder": "Title of your post*"})
     submit = SubmitField('Post')
 
 class RegistrationForm(FlaskForm):

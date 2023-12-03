@@ -34,8 +34,12 @@ class User(db.Model, UserMixin):
     
 class Post(db.Model, UserMixin):
     content = db.Column(db.String(2000),nullable=False)
+    city = db.Column(db.String(200),nullable=False)
     datePosted = db.Column(db.DateTime,default=datetime.utcnow,nullable=False)
     id = db.Column(db.Integer, primary_key=True)
+    likes = db.Column(db.Boolean)
+    name = db.Column(db.String(200),nullable=False)
+    picture = db.Column(db.String(20))
     rating = db.Column(db.Integer,nullable=False)
     title = db.Column(db.String(200),nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)

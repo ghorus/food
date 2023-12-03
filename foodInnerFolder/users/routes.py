@@ -69,7 +69,7 @@ def logout():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        post = Post( author=current_user,content=form.content.data,rating=form.rating.data,title=form.title.data)
         db.session.add(post)
         db.session.commit()
         flash("Your post has been created.",'success')
@@ -124,16 +124,6 @@ def reset_token(token):
         return redirect(url_for('users.login'))
     return render_template('users/reset_token.html',form = form,title="Reset Password")
 
-def send_email(user):
-    token = user.get_reset_token()
-    msg = Message('Password Reset Request', sender='nguyen.victor4@gmail.com',recipients=[user.email])
-    msg.body = f'''
-    To reset, please click on the following link:
-    {url_for('users.reset_token',salt='something',token=token,_external=True)}
-    If you didn't make this request, then you can simply ignore this email and no changes will be made.
-    '''
-    mail.send(msg)
-
 @users.route('/post/<post_id>/update',methods=['GET', 'POST'])
 def update_post(post_id):
     post = Post.query.get(post_id)
@@ -170,3 +160,13 @@ def save_picture(form_picture):
     i.thumbnail(output_size)
     i.save(picture_path)
     return picture_fn
+
+def send_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request', sender='nguyen.victor4@gmail.com',recipients=[user.email])
+    msg.body = f'''
+    To reset, please click on the following link:
+    {url_for('users.reset_token',salt='something',token=token,_external=True)}
+    If you didn't make this request, then you can simply ignore this email and no changes will be made.
+    '''
+    mail.send(msg)

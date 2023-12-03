@@ -21,6 +21,14 @@
             {% endfor %}
         {% endif %}
         <span class="hr"></span>
+        {{form.rating.label(class_="formSubtitle")}}
+        {{form.rating(class_="formInput")}}
+        {% if form.rating.errors %}
+            {% for error in form.rating.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
         {{form.submit(class_="formButton")}}
     </form>
 </section>

@@ -2,7 +2,7 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from foodInnerFolder.models import User
-from wtforms import PasswordField,StringField,SubmitField,TextAreaField
+from wtforms import IntegerField,PasswordField,StringField,SubmitField,TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
 
 class LoginForm(FlaskForm):
@@ -11,8 +11,9 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()],render_kw={"placeholder": "Title of your post*"})
     content = TextAreaField('Content', validators=[DataRequired()],render_kw={"placeholder": "Contents of post here*"})
+    rating = IntegerField('Rate out of 5',validators=[DataRequired()])
+    title = StringField('Food Item Name and/or Food Item Number', validators=[DataRequired()],render_kw={"placeholder": "Title of your post*"})
     submit = SubmitField('Post')
 
 class RegistrationForm(FlaskForm):

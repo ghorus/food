@@ -8,6 +8,14 @@
     {% endif %}
 {% endwith %}
 {% for post in posts %}
+<!-- {{post}}
+    <p> these people like it {{post.liker|length}}</p> 
+    <p> this post has this many likes: {{current_user.likes}}</p>
+    {% for like in current_user.likes %}
+        {%if like == post %}
+        yes!
+        {%endif %}
+    {% endfor %} -->
     <div class="postContainer">
         <section class="post">
             <div class="postUserPicPaddingContainer">
@@ -22,16 +30,32 @@
                 </div>
                 <div class="postContents">
                     <h1 class="ratingStars">{{post.rating}}</h1>
-                    <a href="{{url_for('users.post',post_id=post.id)}}"><h3 class="postTitle">{{post.title}}</h3></a>
+                    <a href="{{url_for('users.post',post_id=post.id)}}"><h3 class="postTitle" style="display:inline">{{post.title}}</h3></a>
                     <p class="postContent">{{post.content}}</p>
                 </div>
             </div>
-            <!-- {% if post.author == current_user %}
-            <a href="{{url_for('users.update_post',post_id=post.id)}}">update that shit</a>
-            <form action="{{url_for('users.delete_post',post_id=post.id)}}" method="POST">
-                <input type="submit" value="delete">
+            <form class="likeContainer" action="{{url_for('main.like',post_id=post.id)}}" method="POST">
+                <input class="likeButton" type="image" src="{{url_for('static', filename = 'post_pics/heart.png')}}" alt="Submit"/>{{post.liker|length}} Likes
             </form>
-            {% endif %} -->
+            {% if post.author == current_user %}
+                <div class="updateDeleteContainer">
+                    <img class="menuPic" src="{{url_for('static', filename = 'post_pics/menu.png')}}">
+                    <section class="menuPicItemsContainer">
+                        <div class="menuPicItemContainer">
+                            <img class="menuPicItem" src="{{url_for('static', filename = 'post_pics/delete.png')}}">
+                            <form action="{{url_for('users.delete_post',post_id=post.id)}}" method="POST">
+                                <input class="postDeleteButton" type="submit" value="Delete">
+                            </form>
+                        </div>
+                        <a href="{{url_for('users.update_post',post_id=post.id)}}">
+                            <div class="menuPicItemContainer">
+                                <img class="menuPicItem" src="{{url_for('static', filename = 'post_pics/arrow.png')}}">
+                                <span>Update</span>
+                            </div>
+                        </a>
+                    </section>
+                </div>
+            {% endif %}
             <div class="postFoodPicContainer"><img class="postFoodPic" src="{{url_for('static', filename = 'post_pics/' + post.picture)}}"></div>
         </section>
     </div>

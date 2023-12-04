@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
+    <script src="{{url_for('static', filename='index.js')}}" defer ></script>
 </head>
 <body>
     <nav>
@@ -29,22 +30,5 @@
     </nav>
     {% block content %}
     {% endblock content %}
-    <script>
-        var rs = document.getElementsByClassName("ratingStars")
-        Array.from(rs).forEach(rating => {
-            var num = parseInt(rating.innerHTML)
-            rating.innerHTML = ""
-            for(i=0;i<num;i++){
-                const star = document.createElement("img")
-                star.src = "{{url_for('static', filename = 'star.png')}}"
-                star.style.height = "25px"
-                star.style.backgroundColor = "rgb(220,20,60)"
-                star.style.borderRadius = "5px"
-                star.style.padding = "5px"
-                star.style.margin = "0px 10px 0px 0px"
-                rating.appendChild(star)
-            }
-        })
-    </script>
 </body>
 </html>

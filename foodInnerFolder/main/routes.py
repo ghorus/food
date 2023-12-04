@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template,request
-from foodInnerFolder.models import Post,User
+from foodInnerFolder.models import Post
 
 main = Blueprint('main',__name__)
 

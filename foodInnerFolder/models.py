@@ -58,3 +58,8 @@ class Post(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User('{self.title},'{self.datePosted}','{self.id})"
+
+class Upload(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    filename = db.Column(db.String(50))
+    data = db.Column(db.LargeBinary)

@@ -170,7 +170,7 @@ def save_post_picture(form_picture):
     picture_fn = random_hex + f_ext
     upload_folder = 'static/post_pics'
     app.config['UPLOAD_FOLDER'] = upload_folder
-    picture_path = os.path.join(app.config['UPLOAD_FOLDER'],picture_fn)
+    picture_path = os.path.join(app.config['UPLOAD_FOLDER'], 'static/post_pics',picture_fn)
     i = Image.open(form_picture)
     i.save(picture_path)
     return picture_fn

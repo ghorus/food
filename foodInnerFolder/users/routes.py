@@ -173,8 +173,7 @@ def save_post_picture(form_picture):
     picture_fn = secure_filename(random_hex + f_ext)
     picture_path = os.path.join(app.root_path,app.config['UPLOAD_FOLDER'],picture_fn)
     form_picture.save(picture_path)
-    print(picture_path)
-    return picture_fn
+    return app.send_static_file('index.html')
 
 def send_email(user):
     token = user.get_reset_token()

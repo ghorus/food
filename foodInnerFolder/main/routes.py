@@ -1,4 +1,4 @@
-from flask import Blueprint,redirect,render_template,request,url_for
+from flask import Blueprint,flash,redirect,render_template,request,url_for
 from flask_login import current_user
 from foodInnerFolder import db
 from foodInnerFolder.models import Post,User
@@ -16,6 +16,9 @@ def like(post_id):
     if current_user.is_authenticated:
         user = User.query.filter_by(username=current_user.username).first()
         post = Post.query.filter_by(id=post_id).first()
+    elif current_user.is_authenticated == False:
+        flash('Must sign in to interact with post.','info')
+        return redirect(url_for('users.login'))
     if post in user.likes:
         user.likes.remove(post)
         db.session.commit()

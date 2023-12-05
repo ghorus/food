@@ -8,6 +8,7 @@ from foodInnerFolder.users.forms import (LoginForm,PostForm,RegistrationForm,Req
 import os
 from PIL import Image
 import secrets
+from werkzeug.utils import secure_filename
 
 users = Blueprint('users',__name__)
 
@@ -164,13 +165,23 @@ def save_picture(form_picture):
     i.save(picture_path)
     return picture_fn
 
+# def save_post_picture(form_picture):
+#     _, f_ext = os.path.splitext(form_picture.filename)
+#     random_hex = secrets.token_hex(8)
+#     picture_fn = random_hex + f_ext
+#     picture_path = os.path.join(app.root_path, 'static/post_pics',picture_fn)
+#     i = Image.open(form_picture)
+#     i.save(picture_path)
+#     return picture_fn
+
 def save_post_picture(form_picture):
+    UPLOAD_FOLDER = '/static/post_pics'
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     _, f_ext = os.path.splitext(form_picture.filename)
     random_hex = secrets.token_hex(8)
     picture_fn = random_hex + f_ext
     picture_path = os.path.join(app.root_path, 'static/post_pics',picture_fn)
-    i = Image.open(form_picture)
-    i.save(picture_path)
+    form_picture.save(picture_path)
     return picture_fn
 
 

@@ -18,6 +18,7 @@ users = Blueprint('users',__name__)
 def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
+        app.logger.warning(request.files[form.picture.data])
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file

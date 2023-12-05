@@ -73,7 +73,8 @@ def new_post():
         picture_file = ""
         if form.picture.data:
             picture_file = save_post_picture(form.picture.data)
-        post = Post( author=current_user,city=form.city.data,content=form.content.data,name=form.name.data,picture=picture_file,rating=form.rating.data,title=form.title.data)
+        post = Post( author=current_user,city=form.city.data,content=form.content.data,
+                    name=form.name.data,picture=picture_file,rating=form.rating.data,title=form.title.data)
         db.session.add(post)
         db.session.commit()
         flash("Your post has been created.",'success')
@@ -158,22 +159,28 @@ def save_picture(form_picture):
     _, f_ext = os.path.splitext(form_picture.filename)
     random_hex = secrets.token_hex(8)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/profile_pics',picture_fn)
+    picture_path = os.path.join(app.root_path, 'static\profile_pics',picture_fn)
+    app.logger.warning(app.root_path + ' #2 ' + picture_path + "#3" + app.config["UPLOADED_PHOTOS_DEST"])
     output_size = (125,125)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
     i.save(picture_path)
-    print(picture_path)
     return picture_fn
 
 def save_post_picture(form_picture):
-    app.config['UPLOAD_FOLDER'] = 'static/post_pics'
+    app.config['UPLOAD_FOLDER'] = 'static\post_pics'
     _, f_ext = os.path.splitext(form_picture.filename)
-    random_hex = secrets.token_hex(8)
-    picture_fn = secure_filename(random_hex + f_ext)
+    random_hex = secure_filename(secrets.token_hex(8))
+    picture_fn = random_hex + f_ext
     picture_path = os.path.join(app.root_path,app.config['UPLOAD_FOLDER'],picture_fn)
     form_picture.save(picture_path)
     return picture_fn
+
+# def save_post_picture(form_picture):
+#     _, f_ext = os.path.splitext(form_picture.filename)
+#     random_hex = secrets.token_hex(8)
+#     picture_fn = secure_filename(random_hex + f_ext)
+
 
 def send_email(user):
     token = user.get_reset_token()

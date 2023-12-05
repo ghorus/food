@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz@6..12&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
     <title>{{title}}</title>
 </head>
 <body>
@@ -24,6 +25,7 @@
                 <a class="link" href="{{url_for('main.home')}}">Home</a>
                 <a class="link" href="{{url_for('users.register')}}">Register</a>
                 <a class="link" href="{{url_for('users.login')}}">Login</a>
+                <a class="link" href="{{url_for('stream.createroom')}}">Chat</a>
             {% endif %}
         </section>
     </nav>

@@ -45,7 +45,7 @@
             {% endfor %}
         {% endif %}
         <span class="hr"></span>
-        {{form.picture.label(class_="formSubtitle")}}
+        {{form.picture.label(class_="formSubtitle",name="postPicture")}}
         {{form.picture(class_="formInput")}}
         {% if form.picture.errors %}
             {% for error in form.picture.errors %}

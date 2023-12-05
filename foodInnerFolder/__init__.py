@@ -28,9 +28,11 @@ mail = Mail(app)
 
 from foodInnerFolder.foodReviews.routes import foodReviewz
 from foodInnerFolder.main.routes import main
+from foodInnerFolder.streaming.routes import stream
 from foodInnerFolder.users.routes import users
 
 app.register_blueprint(foodReviewz)
 app.register_blueprint(main)
+app.register_blueprint(stream)
 app.register_blueprint(users)
 

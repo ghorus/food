@@ -1,6 +1,6 @@
 from flask import Blueprint,flash,redirect,render_template,request,url_for
 from flask_login import current_user
-from foodInnerFolder import db
+from foodInnerFolder import db,app
 from foodInnerFolder.models import Post,User
 
 main = Blueprint('main',__name__)
@@ -9,7 +9,8 @@ main = Blueprint('main',__name__)
 def home():
     page = request.args.get('page',1,type=int)
     posts = Post.query.order_by(Post.datePosted.desc()).paginate(page=page,per_page=2)
-    return render_template('index.html',posts=posts,title="Home")
+    # return render_template('index.html',posts=posts,title="Home")
+    return app.send_static_file('index.html',posts=posts,title=Home)
 
 @main.route("/<post_id>",methods=['POST'])
 def like(post_id):

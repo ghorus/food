@@ -7,7 +7,7 @@ from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 import os 
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='')
 app.config['MAIL_SERVER'] = 'smtp.elasticemail.com'
 app.config['MAIL_PORT'] = 2525
 app.config['MAIL_USE_TLS'] = True

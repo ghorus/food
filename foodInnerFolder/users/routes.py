@@ -160,7 +160,7 @@ def save_picture(form_picture):
     _, f_ext = os.path.splitext(form_picture.filename)
     random_hex = secrets.token_hex(8)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static\profile_pics',picture_fn)
+    picture_path = os.path.join(app.root_path, 'static/profile_pics',picture_fn)
     app.logger.warning("#1" + os.path.abspath(__file__) + " something "+ app.root_path + ' #2 ' + picture_path)
     output_size = (125,125)
     i = Image.open(form_picture)
@@ -169,7 +169,7 @@ def save_picture(form_picture):
     return picture_fn
 
 def save_post_picture(form_picture):
-    app.config['UPLOAD_FOLDER'] = 'static\post_pics'
+    app.config['UPLOAD_FOLDER'] = 'static/post_pics'
     _, f_ext = os.path.splitext(form_picture.filename)
     random_hex = secure_filename(secrets.token_hex(8))
     picture_fn = random_hex + f_ext

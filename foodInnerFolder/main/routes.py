@@ -12,7 +12,7 @@ def home():
     posts = Post.query.order_by(Post.datePosted.desc()).paginate(page=page,per_page=2)
     app.logger.warning("#1" + os.path.abspath(__file__) + " something "+ app.root_path + ' #2 ')
     for post in posts:
-        picture_path = os.path.join(app.root_path, 'static/profile_pics',post.picture)
+        picture_path = os.path.join(app.root_path, 'static/profile_pics',post.author.image_file)
         app.logger.warning(post.picture + " 2 "+ picture_path)
     return render_template('index.html',posts=posts,title="Home")
 

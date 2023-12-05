@@ -169,7 +169,7 @@ def save_picture(form_picture):
     return picture_fn
 
 def save_post_picture(form_picture):
-    app.config['UPLOAD_FOLDER'] = 'static/post_pics'
+    app.config['UPLOAD_FOLDER'] = 'static/images'
     _, f_ext = os.path.splitext(form_picture.filename)
     random_hex = secure_filename(secrets.token_hex(8))
     picture_fn = random_hex + f_ext

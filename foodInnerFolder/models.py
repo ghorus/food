@@ -34,7 +34,7 @@ class User(db.Model, UserMixin):
         return s.dumps({'user_id':self.id},salt='something')
     
     @staticmethod
-    def verify_reset_token(token,expires_sec=20):
+    def verify_reset_token(token,expires_sec=100):
         s = Serializer(app.config['SECRET_KEY'])
         try:
             user_id = s.loads(token,salt='something',max_age=expires_sec)['user_id']

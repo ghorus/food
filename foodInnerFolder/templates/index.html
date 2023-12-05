@@ -56,7 +56,7 @@
                     </section>
                 </div>
             {% endif %}
-            <div class="postFoodPicContainer"><img class="postFoodPic" src="{{url_for('static', filename = 'images/' + post.picture)}}"></div>
+            <div class="postFoodPicContainer"><img class="postFoodPic" src="{{url_for('static', filename = 'post_pics/' + post.picture)}}"></div>
         </section>
     </div>
 {% endfor %}

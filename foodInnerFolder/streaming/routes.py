@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,request,session,redirect,url_for
 from flask_socketio import leave_room, join_room,send
-from foodInnerFolder import socketio
+from foodInnerFolder import socketio,app
 import random
 from string import ascii_uppercase
 
@@ -31,7 +31,7 @@ def createroom():
             room = gen_unique_code(4)
             rooms[room] = {"members":0,"messages":[]}
         elif code not in rooms:
-            return render_template("home.html",error="this room doesn't exist")
+            return render_template("streaming/createroom.html",error="this room doesn't exist")
         session["room"]=room
         session["name"]=name
         return redirect(url_for("stream.room"))
@@ -40,7 +40,7 @@ def createroom():
 def room():
     room = session.get("room")
     if room is None or session.get("name") is None or room not in rooms:
-        return redirect(url_for("home"))
+        return redirect(url_for("stream.createroom"))
     return render_template("streaming/room.html",room=room,messages=rooms[room]["messages"])
 
 #sockets
@@ -56,8 +56,6 @@ def connect():
     join_room(room)
     send({"name":name,"message":"has entered the room"},to=room)
     rooms[room]["members"]+=1
-    print(f'{name} joined room {room}')
-    print(rooms[room]["members"])
 
 @socketio.on("disconnect")
 def disconnect():
@@ -68,7 +66,6 @@ def disconnect():
         if rooms[room]["members"]<=0:
             del rooms[room]
     send({"name":name,"message":"has left the room"},to=room)
-    print(f'{name} has left room {room}')
 
 @socketio.on("message")
 def handle_msgs(data):
@@ -79,5 +76,4 @@ def handle_msgs(data):
               "message":data["data"]}
     send(content,to=room)
     rooms[room]["messages"].append(content)
-    print(f'{session.get("name")} said:{data["data"]}')
-    return render_template("room.html",)
+    return render_template("streaming/room.html",)

@@ -23,7 +23,6 @@
         createMsg(data.name,data.message)
     })
     function sendit(){
-        console.log("send")
         const message = document.querySelector(".message")
         if (message.value == ""){return}
         socket.emit("message",{data:message.value})

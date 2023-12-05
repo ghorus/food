@@ -168,10 +168,10 @@ def save_post_picture(form_picture):
     _, f_ext = os.path.splitext(form_picture.filename)
     random_hex = secrets.token_hex(8)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/post_pics',picture_fn)
-    output_size = (510,700)
+    upload_folder = 'static/post_pics'
+    app.config['UPLOAD_FOLDER'] = upload_folder
+    picture_path = os.path.join(app.config['UPLOAD_FOLDER'],picture_fn)
     i = Image.open(form_picture)
-    i.thumbnail(output_size)
     i.save(picture_path)
     return picture_fn
 

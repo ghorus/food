@@ -1,6 +1,6 @@
 from flask import Blueprint,flash,redirect,render_template,request,url_for
 from flask_login import current_user
-from foodInnerFolder import db,app
+from foodInnerFolder import db
 from foodInnerFolder.models import Post,User
 
 main = Blueprint('main',__name__)

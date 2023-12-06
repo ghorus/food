@@ -23,11 +23,11 @@ user_post = db.Table('user_post',
 class User(db.Model, UserMixin):
     email = db.Column(db.String(120),unique=True,nullable=False)
     id = db.Column(db.Integer, primary_key=True)
-    image_file = db.Column(db.String(20),nullable=False,default='default.png')
     likes = db.relationship('Post', secondary=user_post, backref='liker')
     password = db.Column(db.String(60), nullable = False)
-    username = db.Column(db.String(20),unique=True,nullable=False)
     posts = db.relationship('Post',backref='author',lazy=True)
+    uploads = db.relationship('Upload',backref='pic_owner',lazy=True)
+    username = db.Column(db.String(20),unique=True,nullable=False)
 
     def get_reset_token(self):
         s = Serializer(app.config['SECRET_KEY'])
@@ -51,7 +51,6 @@ class Post(db.Model, UserMixin):
     datePosted = db.Column(db.DateTime,default=datetime.utcnow,nullable=False)
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200),nullable=False)
-    picture = db.Column(db.String(20))
     rating = db.Column(db.Integer,nullable=False)
     title = db.Column(db.String(200),nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
@@ -63,3 +62,4 @@ class Upload(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     filename = db.Column(db.String(50))
     data = db.Column(db.LargeBinary)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)

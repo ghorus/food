@@ -13,7 +13,6 @@ def home():
     posts = Post.query.order_by(Post.datePosted.desc()).paginate(page=page,per_page=2)
     return render_template('index.html',posts=posts,title="Home")
 
-
 @main.route("/testUpload",methods=['GET','POST'])
 def test_upload():
     if request.method == 'POST':

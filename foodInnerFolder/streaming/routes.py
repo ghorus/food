@@ -14,6 +14,7 @@ def gen_unique_code(length):
         if code not in rooms:
             break
     return code
+
 @stream.route("/createroom",methods=["GET","POST"])
 def createroom():
     session.clear()
@@ -36,6 +37,7 @@ def createroom():
         session["name"]=name
         return redirect(url_for("stream.room"))
     return render_template("streaming/createroom.html")
+
 @stream.route("/room")
 def room():
     room = session.get("room")

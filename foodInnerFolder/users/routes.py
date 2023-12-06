@@ -3,7 +3,7 @@ from flask import abort,Blueprint,flash,redirect,render_template,request,url_for
 from flask_login import login_user,login_required,logout_user,current_user
 from flask_mail import Message
 from foodInnerFolder import app, bcrypt, db, mail
-from foodInnerFolder.models import Post,User 
+from foodInnerFolder.models import Post,User,Upload
 from foodInnerFolder.users.forms import (LoginForm,PostForm,RegistrationForm,RequestResetForm,
                                          ResetPasswordForm,UpdateAccountForm)
 import os
@@ -18,9 +18,20 @@ users = Blueprint('users',__name__)
 def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
+        new_pic = None
         if form.picture.data:
-            picture_file = save_picture(form.picture.data)
-            current_user.image_file = picture_file
+            pic = form.picture.data
+
+            if len(current_user.uploads) == 0:
+                upload = Upload(filename=pic.filename,data=i.read(),pic_owner=current_user)
+                db.session.add(upload)
+                db.session.commit()
+            else:
+                Upload.query.filter_by(user_id=current_user.id).delete()
+                db.session.commit()
+                upload = Upload(filename=pic.filename,data=pic.read(),pic_owner=current_user)
+                db.session.add(upload)
+                db.session.commit()
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
@@ -31,8 +42,9 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    image_file = url_for('static', filename="profile_pics/" + current_user.image_file)
-    return render_template('users/account.html',form=form,image_file=image_file, title='Account')
+
+    user_pic = Upload.query.filter_by(user_id=current_user.id).first()
+    return render_template('users/account.html',form=form,image_file = user_pic, title='Account')
 
 @users.route('/post/<post_id>/delete',methods=['POST'])
 def delete_post(post_id):

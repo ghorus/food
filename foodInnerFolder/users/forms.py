@@ -15,7 +15,7 @@ class PostForm(FlaskForm):
     content = TextAreaField('Content', validators=[DataRequired()],render_kw={"placeholder": "Contents of post here*"})
     likes = BooleanField('Like')
     name = StringField('Restaurant Name', validators=[DataRequired()],render_kw={"placeholder": "Name of restaurant here*"})
-    picture = FileField('Picture of Food',validators=[FileAllowed(['jpg','png'])])
+    picture = FileField('Picture of Food',validators=[FileAllowed(['jpg','png','jpeg','gif'])])
     rating = IntegerField('Rate out of 5',validators=[DataRequired(),NumberRange(max=5)])
     title = StringField('Food Item Name and/or Number', validators=[DataRequired()],render_kw={"placeholder": "Title of your post*"})
     submit = SubmitField('Post')
@@ -51,7 +51,7 @@ class ResetPasswordForm(FlaskForm):
 
 class UpdateAccountForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()])
-    picture = FileField('Update Profile Picture',validators=[FileAllowed(['jpg','png'])])
+    picture = FileField('Update Profile Picture',validators=[FileAllowed(['jpg','png','jpeg','gif'])])
     submit = SubmitField('Update')
     username = StringField('Username', validators=[DataRequired(), Length(min=2,max=20)])
 

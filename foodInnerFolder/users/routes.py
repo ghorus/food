@@ -3,12 +3,9 @@ from flask import abort,Blueprint,flash,redirect,render_template,request,url_for
 from flask_login import login_user,login_required,logout_user,current_user
 from flask_mail import Message
 from foodInnerFolder import app, bcrypt, db, mail
-from foodInnerFolder.models import Post,User,Upload
+from foodInnerFolder.models import Food_Post_Upload,Post,Profile_Pic_Upload,User
 from foodInnerFolder.users.forms import (LoginForm,PostForm,RegistrationForm,RequestResetForm,
                                          ResetPasswordForm,UpdateAccountForm)
-import os
-from PIL import Image
-import secrets
 from werkzeug.utils import secure_filename
 
 users = Blueprint('users',__name__)
@@ -18,18 +15,16 @@ users = Blueprint('users',__name__)
 def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
-        new_pic = None
         if form.picture.data:
             pic = form.picture.data
-
             if len(current_user.uploads) == 0:
-                upload = Upload(filename=pic.filename,data=i.read(),pic_owner=current_user)
+                upload = Profile_Pic_Upload(filename=pic.filename,data=pic.read(),pic_owner=current_user)
                 db.session.add(upload)
                 db.session.commit()
             else:
-                Upload.query.filter_by(user_id=current_user.id).delete()
+                Profile_Pic_Upload.query.filter_by(user_id=current_user.id).delete()
                 db.session.commit()
-                upload = Upload(filename=pic.filename,data=pic.read(),pic_owner=current_user)
+                upload = Profile_Pic_Upload(filename=pic.filename,data=pic.read(),pic_owner=current_user)
                 db.session.add(upload)
                 db.session.commit()
         current_user.username = form.username.data
@@ -43,7 +38,7 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
 
-    user_pic = Upload.query.filter_by(user_id=current_user.id).first()
+    user_pic = Profile_Pic_Upload.query.filter_by(user_id=current_user.id).first()
     return render_template('users/account.html',form=form,image_file = user_pic, title='Account')
 
 @users.route('/post/<post_id>/delete',methods=['POST'])
@@ -83,13 +78,15 @@ def logout():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        picture_file = ""
-        if form.picture.data:
-            picture_file = save_post_picture(form.picture.data)
         post = Post( author=current_user,city=form.city.data,content=form.content.data,
-                    name=form.name.data,picture=picture_file,rating=form.rating.data,title=form.title.data)
+                    name=form.name.data,rating=form.rating.data,title=form.title.data)
         db.session.add(post)
         db.session.commit()
+        if form.picture.data:
+            pic = form.picture.data
+            upload = Food_Post_Upload(filename=pic.filename,data=pic.read(),belongs_to_post=post)
+            db.session.add(upload)
+            db.session.commit()
         flash("Your post has been created.",'success')
         return redirect(url_for('main.home'))
     return render_template('users/create_post.html',title='New Post',form=form)
@@ -168,25 +165,25 @@ def user_posts(username):
         .paginate(page=page,per_page=8)
     return render_template('user_posts.html',posts=posts,user=user)
 
-def save_picture(form_picture):
-    _, f_ext = os.path.splitext(form_picture.filename)
-    random_hex = secrets.token_hex(8)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/profile_pics',picture_fn)
-    output_size = (125,125)
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
-    i.save(picture_path)
-    return picture_fn
+# def save_picture(form_picture):
+#     _, f_ext = os.path.splitext(form_picture.filename)
+#     random_hex = secrets.token_hex(8)
+#     picture_fn = random_hex + f_ext
+#     picture_path = os.path.join(app.root_path, 'static/profile_pics',picture_fn)
+#     output_size = (125,125)
+#     i = Image.open(form_picture)
+#     i.thumbnail(output_size)
+#     i.save(picture_path)
+#     return picture_fn
 
-def save_post_picture(form_picture):
-    app.config['UPLOAD_FOLDER'] = 'static/post_pics'
-    _, f_ext = os.path.splitext(form_picture.filename)
-    random_hex = secure_filename(secrets.token_hex(8))
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path,app.config['UPLOAD_FOLDER'],picture_fn)
-    form_picture.save(picture_path)
-    return picture_fn
+# def save_post_picture(form_picture):
+#     app.config['UPLOAD_FOLDER'] = 'static/post_pics'
+#     _, f_ext = os.path.splitext(form_picture.filename)
+#     random_hex = secure_filename(secrets.token_hex(8))
+#     picture_fn = random_hex + f_ext
+#     picture_path = os.path.join(app.root_path,app.config['UPLOAD_FOLDER'],picture_fn)
+#     form_picture.save(picture_path)
+#     return picture_fn
 
 def send_email(user):
     token = user.get_reset_token()

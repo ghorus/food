@@ -8,7 +8,7 @@
         {% endif %}
     {% endwith %}
     <section class="userProfile">
-        <img class="profilePic" src="{{ url_for('main.download', id=image_file.id) }}">
+        <img class="profilePic" src="{{ url_for('main.upload', id=image_file.id) }}">
         <div>
             <h1 class="profileText">{{current_user.username}}
             <h1 class="profileText">{{current_user.email}}

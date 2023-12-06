@@ -26,7 +26,7 @@ class User(db.Model, UserMixin):
     likes = db.relationship('Post', secondary=user_post, backref='liker')
     password = db.Column(db.String(60), nullable = False)
     posts = db.relationship('Post',backref='author',lazy=True)
-    uploads = db.relationship('Upload',backref='pic_owner',lazy=True)
+    uploads = db.relationship('Profile_Pic_Upload',backref='pic_owner',lazy=True)
     username = db.Column(db.String(20),unique=True,nullable=False)
 
     def get_reset_token(self):
@@ -51,14 +51,21 @@ class Post(db.Model, UserMixin):
     datePosted = db.Column(db.DateTime,default=datetime.utcnow,nullable=False)
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200),nullable=False)
+    uploads = db.relationship('Food_Post_Upload',backref='belongs_to_post',lazy=True)
     rating = db.Column(db.Integer,nullable=False)
     title = db.Column(db.String(200),nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
 
     def __repr__(self):
         return f"User('{self.title},'{self.datePosted}','{self.id})"
+    
+class Food_Post_Upload(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    filename = db.Column(db.String(50))
+    data = db.Column(db.LargeBinary)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'),nullable=False)
 
-class Upload(db.Model):
+class Profile_Pic_Upload(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     filename = db.Column(db.String(50))
     data = db.Column(db.LargeBinary)

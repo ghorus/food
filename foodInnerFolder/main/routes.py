@@ -2,7 +2,7 @@ import base64
 from flask import Blueprint,flash,redirect,render_template,request,send_file,url_for
 from flask_login import current_user
 from foodInnerFolder import db
-from foodInnerFolder.models import Post,Upload,User
+from foodInnerFolder.models import Food_Post_Upload,Post,Profile_Pic_Upload,User
 from io import BytesIO
 
 main = Blueprint('main',__name__)
@@ -13,23 +13,29 @@ def home():
     posts = Post.query.order_by(Post.datePosted.desc()).paginate(page=page,per_page=2)
     return render_template('index.html',posts=posts,title="Home")
 
-@main.route("/testUpload",methods=['GET','POST'])
-def test_upload():
-    if request.method == 'POST':
-        file = request.files['file']
-        upload = Upload(filename=file.filename,data=file.read())
-        db.session.add(upload)
-        db.session.commit()
-    return render_template('testUpload.html',title="testUpload")
+# @main.route("/testUpload",methods=['GET','POST'])
+# def test_upload():
+#     if request.method == 'POST':
+#         file = request.files['file']
+#         upload = Upload(filename=file.filename,data=file.read())
+#         db.session.add(upload)
+#         db.session.commit()
+#     return render_template('testUpload.html',title="testUpload")
 
-@main.route("/dl/<id>")
-def download(id):
-    upload = Upload.query.filter_by(id=id).first()
+@main.route("/upload_pic/<id>")
+def upload(id):
+    upload = Profile_Pic_Upload.query.filter_by(id=id).first()
     return send_file(BytesIO(upload.data),download_name = upload.filename,as_attachment=True)
 
-@main.route("/dl")
+@main.route("/upload_foodPic/<id>")
+def uploadFood(id):
+    upload = Food_Post_Upload.query.filter_by(id=id).first()
+    return send_file(BytesIO(upload.data),download_name = upload.filename,as_attachment=True)
+
+
+@main.route("/pics")
 def pics():
-    pics = Upload.query.all()
+    pics = Profile_Pic_Upload.query.all()
     return render_template('pics.html',pics=pics,title="testPics")
 
 @main.route("/<post_id>",methods=['POST'])

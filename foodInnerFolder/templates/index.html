@@ -8,19 +8,17 @@
     {% endif %}
 {% endwith %}
 {% for post in posts %}
-<!-- {{post}}
-    <p> these people like it {{post.liker|length}}</p> 
-    <p> this post has this many likes: {{current_user.likes}}</p>
-    {% for like in current_user.likes %}
-        {%if like == post %}
-        yes!
-        {%endif %}
-    {% endfor %} -->
     <div class="postContainer">
         <section class="post">
             <div class="postUserPicPaddingContainer">
                 <div class="postUserPicContainer">
-                    <img class="postUserPic" src="{{url_for('static', filename = 'profile_pics/' + post.author.image_file)}}">
+                    {% if post.author.uploads %}
+                        {% for uploads in post.author.uploads %}
+                            <img class="postUserPic" src="{{ url_for('main.upload', id=uploads.id) }}" alt="">
+                        {% endfor %}
+                    {% else %}
+                            <img class="postUserPic" alt="">
+                    {% endif %}
                     <div class="postUserTime">
                         <span>Posted by <a class="postUsername" href="{{url_for('users.user_posts', username=post.author.username)}}">{{post.author.username}}</a></span>
                         <span class="postTime">{{post.datePosted.strftime('%m-%d-%Y @ %H:%M')}}</span>
@@ -56,8 +54,17 @@
                     </section>
                 </div>
             {% endif %}
-            <div class="postFoodPicContainer"><img class="postFoodPic" src="{{url_for('static', filename = 'post_pics/' + post.picture)}}"></div>
-        </section>
+            <div class="postFoodPicContainer">
+                {% if post.uploads %}
+                    {% for uploads in post.uploads %}
+                        <img class="postFoodPic" src="{{ url_for('main.uploadFood', id=uploads.id) }}" alt="">
+                        {{uploads.id}}tes
+                    {% endfor %}
+                {% else %}
+                        <img class="postFoodPic" alt="">
+                {% endif %}
+            </div>
+</section>
     </div>
 {% endfor %}
 {% for page_num in posts.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=1) %}

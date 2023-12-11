@@ -20,8 +20,8 @@ var peer = new Peer();
 const peers = {}
 const videoGrid = document.getElementById("video-grid")
 myVideo.muted=true
-const host = document.querySelector(".host")
-const viewer = document.querySelector(".viewer")
+const host = document.querySelector(".host").innerHTML
+const viewer = document.querySelector(".viewer").innerHTML
 var i = []
 navigator.mediaDevices.getUserMedia({
     video:true,
@@ -35,7 +35,7 @@ navigator.mediaDevices.getUserMedia({
         addVidStream(myVideo,stream)
     }
     peer.on('call',call =>{
-        call.answer(stream)
+        // call.answer(stream)
         const vid = document.createElement('video')
         call.on('stream',otherGuysStream =>{
             i.push(otherGuysStream.id)

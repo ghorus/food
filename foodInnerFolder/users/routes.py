@@ -60,7 +60,6 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
-            flash("You've succesfully logged in",'success')
             login_user(user)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main.home'))
@@ -89,7 +88,7 @@ def new_post():
             db.session.add(upload)
             db.session.commit()
         if form.stream.data == True:
-            return redirect(url_for('stream.streaming'))
+            return redirect(url_for('stream.streaming', host = current_user.id))
         return redirect(url_for('main.home'))
     return render_template('users/create_post.html',title='New Post',form=form)
 
@@ -147,6 +146,7 @@ def send_email(user):
     msg.body = f'''
     To reset, please click on the following link:
     {url_for('users.reset_token',salt='something',token=token,_external=True)}
+    <h1>HEY WHATS GOOD</h1>
     If you didn't make this request, then you can simply ignore this email and no changes will be made.
     '''
     mail.send(msg)

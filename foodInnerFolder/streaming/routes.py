@@ -1,5 +1,5 @@
 from flask import Blueprint,render_template,request,session,redirect,url_for
-from flask_socketio import leave_room, join_room,send
+from flask_socketio import leave_room, join_room,send,emit
 from foodInnerFolder import socketio,app
 import random
 from string import ascii_uppercase
@@ -46,9 +46,9 @@ def room():
         return redirect(url_for("stream.createroom"))
     return render_template("streaming/room.html",test=test,room=room,messages=rooms[room]["messages"])
 
-@stream.route("/streaming")
-def streaming():
-    return render_template("streaming/stream.html")
+@stream.route("/streaming/<int:host>")
+def streaming(host):
+    return render_template("streaming/stream.html",host = host)
 
 #sockets
 @socketio.on("connect")
@@ -83,4 +83,8 @@ def handle_msgs(data):
               "message":data["data"]}
     send(content,to=room)
     rooms[room]["messages"].append(content)
+
+@socketio.on("listen to new users")
+def new_user_connected(user_id):
+    emit('listen to new users',user_id,broadcast=True)
 

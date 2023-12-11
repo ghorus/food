@@ -23,7 +23,6 @@ def uploadFood(id):
     upload = Food_Post_Upload.query.filter_by(id=id).first()
     return send_file(BytesIO(upload.data),download_name = upload.filename,as_attachment=True)
 
-# @main.route("/<post_id>",methods=['POST'])
 @socketio.on('like')
 def like(post_id):
     app.logger.warning('user just liked something')
@@ -41,8 +40,6 @@ def like(post_id):
             db.session.commit()
             emit('like',len(post.liker))
 
-           
-        app.logger.warning(post_id + 'this is the post id')
     elif current_user.is_authenticated == False:
         emit('redirect', url_for('users.login'))
 

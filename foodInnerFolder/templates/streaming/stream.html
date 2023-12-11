@@ -1,6 +1,5 @@
 {% extends 'layout.html' %}
 {% block content %}
-{% if host == current_user.id %}
 <span class="host">{{host}}</span>
 <span class="viewer">{{current_user.id}}</span>
 <style>
@@ -8,7 +7,5 @@
     video{width: 100%;height: 100%;object-fit: cover;}
 </style>
 <div id="video-grid"></div>
-<script src="{{url_for('static', filename='streaming_js_files/streamer.js')}}" defer ></script>
-{% endif %}
-<script src="{{url_for('static', filename='streaming_js_files/viewers.js')}}" defer ></script>
+
 {% endblock content %}

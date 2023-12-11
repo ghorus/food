@@ -18,6 +18,20 @@ if(streamer==viewer){
         addVidStream(myVideo,stream)
         socket.on('listen to new users',(id)=>{
             console.log(id)
+            connectToNewUser(id,stream)
+            function connectToNewUser(id,stream){
+                console.log(id,stream)
+                // const call = peer.call(id,stream)
+                //     const vid = document.createElement('video')
+                //     call.on('stream',userVidStream=>{
+                //         // addVidStream(vid,userVidStream)
+                //         console.log('call made from ' + id, userVidStream)
+                //     })
+                //     call.on('close',()=>{
+                //         vid.remove()
+                //         console.log('user left')
+                //     })
+            }
         })
         peer.on('open', id => {
             socket.emit('listen to new users',id)

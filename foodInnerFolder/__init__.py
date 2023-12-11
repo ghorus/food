@@ -27,13 +27,11 @@ login_manager.login_view = 'users.login'
 login_manager.login_message_category = "info"
 mail = Mail(app)
 
-from foodInnerFolder.foodReviews.routes import foodReviewz
 from foodInnerFolder.main.routes import main
-from foodInnerFolder.streaming.routes import stream
+from foodInnerFolder.game.routes import game
 from foodInnerFolder.users.routes import users
 
-app.register_blueprint(foodReviewz)
 app.register_blueprint(main)
-app.register_blueprint(stream)
+app.register_blueprint(game)
 app.register_blueprint(users)
 

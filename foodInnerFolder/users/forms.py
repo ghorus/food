@@ -5,6 +5,11 @@ from foodInnerFolder.models import User
 from wtforms import BooleanField,IntegerField,PasswordField,StringField,SubmitField,TextAreaField
 from wtforms.validators import DataRequired, Length,NumberRange, EqualTo, Email, ValidationError
 
+class CreateGameRoomForm(FlaskForm):
+    name = StringField('Room Name', validators=[DataRequired()],render_kw={"placeholder": "Name of room here*"})
+    submit = SubmitField('Create Game')
+    submitJoin = SubmitField('Join Game')
+
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(),Email()],render_kw={"placeholder": "example@example.com*"})
     password = PasswordField('Password',validators=[DataRequired()],render_kw={"placeholder": "Your password here*"})
@@ -17,7 +22,6 @@ class PostForm(FlaskForm):
     name = StringField('Restaurant Name', validators=[DataRequired()],render_kw={"placeholder": "Name of restaurant here*"})
     picture = FileField('Picture of Food',validators=[FileAllowed(['jpg','png','jpeg','gif'])])
     rating = IntegerField('Rate out of 5',validators=[DataRequired(),NumberRange(max=5)])
-    stream = BooleanField('Stream?')
     title = StringField('Food Item Name and/or Number', validators=[DataRequired()],render_kw={"placeholder": "Title of your post*"})
     submit = SubmitField('Post')
 

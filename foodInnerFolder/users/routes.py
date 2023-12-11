@@ -87,8 +87,6 @@ def new_post():
             upload = Food_Post_Upload(filename=sec_fn,data=pic.read(),belongs_to_post=post)
             db.session.add(upload)
             db.session.commit()
-        if form.stream.data == True:
-            return redirect(url_for('stream.streaming', host = current_user.id))
         return redirect(url_for('main.home'))
     return render_template('users/create_post.html',title='New Post',form=form)
 

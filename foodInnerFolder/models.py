@@ -14,6 +14,13 @@ class Food_Post_Upload(db.Model):
     data = db.Column(db.LargeBinary)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'),nullable=False)
 
+class Game_Room(db.Model,UserMixin):
+    id = db.Column(db.Integer, primary_key = True)
+    host_id = db.Column(db.Integer)
+    member_id = db.Column(db.Integer)
+    messages = db.Column(db.String(200))
+    name = db.Column(db.String(200),nullable=False)
+
 class Post(db.Model, UserMixin):
     content = db.Column(db.String(2000),nullable=False)
     city = db.Column(db.String(200),nullable=False)
@@ -22,7 +29,6 @@ class Post(db.Model, UserMixin):
     name = db.Column(db.String(200),nullable=False)
     uploads = db.relationship('Food_Post_Upload',backref='belongs_to_post',lazy=True)
     rating = db.Column(db.Integer,nullable=False)
-    stream = db.Column(db.Boolean,default=False,nullable=True)
     title = db.Column(db.String(200),nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
 

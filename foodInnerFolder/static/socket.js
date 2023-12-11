@@ -10,9 +10,9 @@ Array.from(likeButton).forEach(like => {
         })
 })
 })
-// socket.on('redirect', (dest) => {
-//     window.location.href = dest;
-//     });
+socket.on('redirect', (dest) => {
+    window.location.href = dest;
+    });
 
 
 // const myVideo = document.createElement("video")

@@ -17,7 +17,6 @@ var socket = io();
 //streaming
 const myVideo = document.createElement("video")
 var peer = new Peer();
-var socket = io()
 const videoGrid = document.getElementById("video-grid")
 myVideo.muted=true
 

@@ -6,7 +6,8 @@
 <button onclick="sendit()">Send</button>
 <script type="text/javascript" charset="utf-8">
     var socket = io();
-    const messages = document.querySelector(".messages")
+    socket.on('connect', function() {
+    });
     function createMsg(name,msg){
         const content =`
         <div>
@@ -24,12 +25,11 @@
     })
     function sendit(){
         const message = document.querySelector(".message")
-        if (message.value == ""){return}
+        if (message.value == ""){return} 
         socket.emit("message",{data:message.value})
         message.value =""
     }
 </script>
-
 {% for msg in messages %}
     <script type="text/javascript">
         createMsg("{{msg.name}}","{{msg.message}}")

@@ -1,12 +1,64 @@
 {% extends 'layout.html' %}
 {% block content %}
-<form method="POST" action="" enctype="multipart/form-data" novalidate>
-    {{form.hidden_tag()}}
-    {{form_legend}}
-    {{form.title.label}}
-    {{form.title}}
-    {{form.content.label}}
-    {{form.content}}
-    {{form.submit}}
-</form>
+<section class="formContainer">
+    <form class="formInsideContainer" method="POST" action="" enctype="multipart/form-data" novalidate>
+        {{form.hidden_tag()}}
+        <h1 class="formTitle">{{form_legend}}</h1>
+        <span class="hr"></span>
+        {{form.name.label(class_="formSubtitle")}}
+        {{form.name(class_="formInput")}}
+        {% if form.name.errors %}
+            {% for error in form.name.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.city.label(class_="formSubtitle")}}
+        {{form.city(class_="formInput")}}
+        {% if form.city.errors %}
+            {% for error in form.city.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.title.label(class_="formSubtitle")}}
+        {{form.title(class_="formInput")}}
+        {% if form.title.errors %}
+            {% for error in form.title.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.content.label(class_="formSubtitle")}}
+        {{form.content(class_="formInput formTextArea")}}
+        {% if form.content.errors %}
+            {% for error in form.content.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.rating.label(class_="formSubtitle")}}
+        {{form.rating(class_="formInput")}}
+        {% if form.rating.errors %}
+            {% for error in form.rating.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {% if post.uploads %}
+                    {% for uploads in post.uploads %}
+                        <img class="postFoodPic" src="{{ url_for('main.uploadFood', id=uploads.id) }}" alt="">
+                    {% endfor %}
+                {% endif %}
+        {{form.picture.label(class_="formSubtitle",name="postPicture")}}
+        {{form.picture(class_="formInput")}}
+        {% if form.picture.errors %}
+            {% for error in form.picture.errors %}
+                {{error}}
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.submit(class_="formButton")}}
+    </form>
+</section>
 {% endblock content %}

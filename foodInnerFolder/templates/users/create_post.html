@@ -9,7 +9,7 @@
         {{form.name(class_="formInput")}}
         {% if form.name.errors %}
             {% for error in form.name.errors %}
-                {{error}}
+            <p class="danger">{{error}}</p>
             {% endfor %}
         {% endif %}
         <span class="hr"></span>
@@ -17,7 +17,7 @@
         {{form.city(class_="formInput")}}
         {% if form.city.errors %}
             {% for error in form.city.errors %}
-                {{error}}
+            <p class="danger">{{error}}</p>
             {% endfor %}
         {% endif %}
         <span class="hr"></span>
@@ -25,7 +25,7 @@
         {{form.title(class_="formInput")}}
         {% if form.title.errors %}
             {% for error in form.title.errors %}
-                {{error}}
+            <p class="danger">{{error}}</p>
             {% endfor %}
         {% endif %}
         <span class="hr"></span>
@@ -33,7 +33,7 @@
         {{form.content(class_="formInput formTextArea")}}
         {% if form.content.errors %}
             {% for error in form.content.errors %}
-                {{error}}
+            <p class="danger">{{error}}</p>
             {% endfor %}
         {% endif %}
         <span class="hr"></span>
@@ -41,7 +41,7 @@
         {{form.rating(class_="formInput")}}
         {% if form.rating.errors %}
             {% for error in form.rating.errors %}
-                {{error}}
+            <p class="danger">{{error}}</p>
             {% endfor %}
         {% endif %}
         <span class="hr"></span>
@@ -49,7 +49,15 @@
         {{form.picture(class_="formInput")}}
         {% if form.picture.errors %}
             {% for error in form.picture.errors %}
-                {{error}}
+            <p class="danger">{{error}}</p>
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.stream.label(class_="formSubtitle",name="postPicture")}}
+        {{form.stream(class_="formInput")}}
+        {% if form.picture.errors %}
+            {% for error in form.picture.errors %}
+            <p class="danger">{{error}}</p>
             {% endfor %}
         {% endif %}
         <span class="hr"></span>

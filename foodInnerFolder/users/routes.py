@@ -6,6 +6,7 @@ from foodInnerFolder import app, bcrypt, db, mail
 from foodInnerFolder.models import Food_Post_Upload,Post,Profile_Pic_Upload,User
 from foodInnerFolder.users.forms import (LoginForm,PostForm,RegistrationForm,RequestResetForm,
                                          ResetPasswordForm,UpdateAccountForm)
+from PIL import Image
 from werkzeug.utils import secure_filename
 
 users = Blueprint('users',__name__)
@@ -17,20 +18,20 @@ def account():
     if form.validate_on_submit():
         if form.picture.data:
             pic = form.picture.data
+            sec_fn = secure_filename(pic.filename)
             if len(current_user.uploads) == 0:
-                upload = Profile_Pic_Upload(filename=pic.filename,data=pic.read(),pic_owner=current_user)
+                upload = Profile_Pic_Upload(filename=sec_fn,data=pic.read(),pic_owner=current_user)
                 db.session.add(upload)
                 db.session.commit()
             else:
                 Profile_Pic_Upload.query.filter_by(user_id=current_user.id).delete()
                 db.session.commit()
-                upload = Profile_Pic_Upload(filename=pic.filename,data=pic.read(),pic_owner=current_user)
+                upload = Profile_Pic_Upload(filename=sec_fn,data=pic.read(),pic_owner=current_user)
                 db.session.add(upload)
                 db.session.commit()
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
-        flash('Your account has been updated','success')
         # redirect instead of going to return render template to avoid another post request 
         # when reloading page
         return redirect(url_for('users.account'))
@@ -70,7 +71,6 @@ def login():
 @users.route("/logout")
 def logout():
     logout_user()
-    flash("You've logged out.",'success')
     return redirect(url_for('main.home'))
 
 @users.route("/post/new",methods=['GET', 'POST'])
@@ -79,15 +79,17 @@ def new_post():
     form = PostForm()
     if form.validate_on_submit():
         post = Post( author=current_user,city=form.city.data,content=form.content.data,
-                    name=form.name.data,rating=form.rating.data,title=form.title.data)
+                    name=form.name.data,rating=form.rating.data,stream=form.stream.data, title=form.title.data)
         db.session.add(post)
         db.session.commit()
         if form.picture.data:
             pic = form.picture.data
-            upload = Food_Post_Upload(filename=pic.filename,data=pic.read(),belongs_to_post=post)
+            sec_fn = secure_filename(pic.filename)
+            upload = Food_Post_Upload(filename=sec_fn,data=pic.read(),belongs_to_post=post)
             db.session.add(upload)
             db.session.commit()
-        flash("Your post has been created.",'success')
+        if form.stream.data == True:
+            return redirect(url_for('stream.streaming'))
         return redirect(url_for('main.home'))
     return render_template('users/create_post.html',title='New Post',form=form)
 
@@ -139,52 +141,6 @@ def reset_token(token):
         return redirect(url_for('users.login'))
     return render_template('users/reset_token.html',form = form,title="Reset Password")
 
-@users.route('/post/<post_id>/update',methods=['GET', 'POST'])
-def update_post(post_id):
-    post = Post.query.get(post_id)
-    if post.author != current_user:
-        abort(403)
-    form = PostForm()
-    if form.validate_on_submit():
-        post.title = form.title.data
-        post.content = form.content.data
-        db.session.commit()
-        flash('Your post has been updated!','success')
-        return redirect(url_for('users.post',post_id=post.id))
-    elif request.method == 'GET':
-        form.title.data = post.title
-        form.content.data = post.content
-    return render_template('users/update_post.html',title='Update Post',form=form,form_legend="Update Post")
-
-@users.route('/user/<username>')
-def user_posts(username):
-    page = request.args.get('page',1,type=int)
-    user = User.query.filter_by(username=username).first()
-    posts = Post.query.filter_by(author=user)\
-        .order_by(Post.datePosted.desc())\
-        .paginate(page=page,per_page=8)
-    return render_template('user_posts.html',posts=posts,user=user)
-
-# def save_picture(form_picture):
-#     _, f_ext = os.path.splitext(form_picture.filename)
-#     random_hex = secrets.token_hex(8)
-#     picture_fn = random_hex + f_ext
-#     picture_path = os.path.join(app.root_path, 'static/profile_pics',picture_fn)
-#     output_size = (125,125)
-#     i = Image.open(form_picture)
-#     i.thumbnail(output_size)
-#     i.save(picture_path)
-#     return picture_fn
-
-# def save_post_picture(form_picture):
-#     app.config['UPLOAD_FOLDER'] = 'static/post_pics'
-#     _, f_ext = os.path.splitext(form_picture.filename)
-#     random_hex = secure_filename(secrets.token_hex(8))
-#     picture_fn = random_hex + f_ext
-#     picture_path = os.path.join(app.root_path,app.config['UPLOAD_FOLDER'],picture_fn)
-#     form_picture.save(picture_path)
-#     return picture_fn
-
 def send_email(user):
     token = user.get_reset_token()
     msg = Message('Password Reset Request', sender='nguyen.victor4@gmail.com',recipients=[user.email])
@@ -194,3 +150,52 @@ def send_email(user):
     If you didn't make this request, then you can simply ignore this email and no changes will be made.
     '''
     mail.send(msg)
+
+@users.route('/post/<post_id>/update',methods=['GET', 'POST'])
+def update_post(post_id):
+    post = Post.query.get(post_id)
+    if post.author != current_user:
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.city = form.city.data
+        post.content = form.content.data
+        post.name = form.name.data
+        post.rating = form.rating.data
+        post.title = form.title.data
+        db.session.commit()
+        if form.picture.data:
+            pic = form.picture.data
+            if len(post.uploads) == 0:
+                app.logger.warning('there are no uplaods')
+                upload = Food_Post_Upload(filename=pic.filename,data=pic.read(),belongs_to_post=post)
+                db.session.add(upload)
+                db.session.commit()
+            else:
+                app.logger.warning('deleting all uplaods AND ADDING NEW ONE')
+                Food_Post_Upload.query.filter_by(post_id=post.id).delete()
+                db.session.commit()
+                upload = Food_Post_Upload(filename=pic.filename,data=pic.read(),belongs_to_post=post)
+                db.session.add(upload)
+                db.session.commit()
+        flash('Your post has been updated!','success')
+        return redirect(url_for('users.post',post_id=post.id))
+    elif request.method == 'GET':
+        form.city.data = post.city
+        form.content.data = post.content
+        form.name.data = post.name
+        form.rating.data = post.rating
+        form.title.data = post.title
+        if post.uploads:
+            form.picture.data = post.uploads
+            app.logger.warning(post.uploads)
+    return render_template('users/update_post.html',title='Update Post',form=form,form_legend="Update Post",post=post)
+
+@users.route('/user/<username>')
+def user_posts(username):
+    page = request.args.get('page',1,type=int)
+    user = User.query.filter_by(username=username).first()
+    posts = Post.query.filter_by(author=user)\
+        .order_by(Post.datePosted.desc())\
+        .paginate(page=page,per_page=8)
+    return render_template('user_posts.html',posts=posts,user=user)

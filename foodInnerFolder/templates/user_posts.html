@@ -2,8 +2,61 @@
 {% block content %}
     {{user.username}}: {{posts.total}} posts total
     {% for post in posts %}
-        <a href="{{url_for('users.post',post_id=post.id)}}"><h3 class="postTitle">{{post.title}}</h3></a>
-        <p>{{post.content}}</p>
+        <div class="postContainer">
+            <section class="post">
+                <div class="postUserPicPaddingContainer">
+                    <div class="postUserPicContainer">
+                        {% if post.author.uploads %}
+                            {% for uploads in post.author.uploads %}
+                                <img class="postUserPic" src="{{ url_for('main.upload', id=uploads.id) }}" alt="">
+                            {% endfor %}
+                        {% else %}
+                                <img class="postUserPic" alt="">
+                        {% endif %}
+                        <div class="postUserTime">
+                            <span>Posted by <a class="postUsername" href="{{url_for('users.user_posts', username=post.author.username)}}">{{post.author.username}}</a></span>
+                            <span class="postTime">{{post.datePosted.strftime('%m-%d-%Y @ %H:%M')}}</span>
+                            <span class="postTime">{{post.name}}</span>
+                            <span class="postTime">{{post.city}}</span>
+                        </div>
+                    </div>
+                    <div class="postContents">
+                        <h1 class="ratingStars">{{post.rating}}</h1>
+                        <a href="{{url_for('users.post',post_id=post.id)}}"><h3 class="postTitle" style="display:inline">{{post.title}}</h3></a>
+                        <p class="postContent">{{post.content}}</p>
+                    </div>
+                </div>
+                <div class="likeContainer">
+                    <input class="likeButton" alt="Submit" id={{post.id}} src="{{url_for('static', filename = 'post_pics/heart.png')}}"  type="image"/><span class="totalLikes">{{post.liker|length}} Likes</span>
+                </div>  
+                {% if post.author == current_user %}
+                    <div class="updateDeleteContainer">
+                        <img class="menuPic" src="{{url_for('static', filename = 'post_pics/menu.png')}}">
+                        <section class="menuPicItemsContainer">
+                            <div class="menuPicItemContainer">
+                                <img class="menuPicItem" src="{{url_for('static', filename = 'post_pics/delete.png')}}">
+                                <form action="{{url_for('users.delete_post',post_id=post.id)}}" method="POST">
+                                    <input class="postDeleteButton" type="submit" value="Delete">
+                                </form>
+                            </div>
+                            <a href="{{url_for('users.update_post',post_id=post.id)}}">
+                                <div class="menuPicItemContainer">
+                                    <img class="menuPicItem" src="{{url_for('static', filename = 'post_pics/arrow.png')}}">
+                                    <span>Update</span>
+                                </div>
+                            </a>
+                        </section>
+                    </div>
+                {% endif %}
+                <div class="postFoodPicContainer">
+                    {% if post.uploads %}
+                        {% for uploads in post.uploads %}
+                            <img class="postFoodPic" src="{{ url_for('main.uploadFood', id=uploads.id) }}" alt="">
+                        {% endfor %}
+                    {% endif %}
+                </div>
+    </section>
+        </div>
     {% endfor %}
     {% for page_num in posts.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=1) %}
     {% if page_num %}
@@ -16,4 +69,5 @@
         ...
     {% endif %}
 {% endfor %}
+
 {% endblock content %}

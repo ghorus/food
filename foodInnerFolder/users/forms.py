@@ -17,6 +17,7 @@ class PostForm(FlaskForm):
     name = StringField('Restaurant Name', validators=[DataRequired()],render_kw={"placeholder": "Name of restaurant here*"})
     picture = FileField('Picture of Food',validators=[FileAllowed(['jpg','png','jpeg','gif'])])
     rating = IntegerField('Rate out of 5',validators=[DataRequired(),NumberRange(max=5)])
+    stream = BooleanField('Stream?')
     title = StringField('Food Item Name and/or Number', validators=[DataRequired()],render_kw={"placeholder": "Title of your post*"})
     submit = SubmitField('Post')
 

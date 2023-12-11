@@ -6,6 +6,7 @@ from string import ascii_uppercase
 
 stream = Blueprint('stream',__name__)
 rooms = {}
+test = []
 def gen_unique_code(length):
     while True:
         code = ""
@@ -43,7 +44,11 @@ def room():
     room = session.get("room")
     if room is None or session.get("name") is None or room not in rooms:
         return redirect(url_for("stream.createroom"))
-    return render_template("streaming/room.html",room=room,messages=rooms[room]["messages"])
+    return render_template("streaming/room.html",test=test,room=room,messages=rooms[room]["messages"])
+
+@stream.route("/streaming")
+def streaming():
+    return render_template("streaming/stream.html")
 
 #sockets
 @socketio.on("connect")
@@ -78,4 +83,4 @@ def handle_msgs(data):
               "message":data["data"]}
     send(content,to=room)
     rooms[room]["messages"].append(content)
-    return render_template("streaming/room.html",)
+

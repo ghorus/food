@@ -22,3 +22,19 @@ Array.from(updateDelete).forEach(menu => {
         else{menu.style.height="40px"}
     })
 })
+
+//socket home likes
+var socket = io();
+    const likeButton = document.getElementsByClassName("likeButton")
+    const totalLikes = document.getElementsByClassName("totalLikes")
+    Array.from(likeButton).forEach(like => {
+            $(like).unbind('click').click(function(){
+            socket.on('like',(data)=>{
+                like.nextElementSibling.innerHTML = data + " Likes"
+            })
+            socket.emit('like',like.id)
+    })
+    })
+    socket.on('redirect', (dest) => {
+        window.location.href = dest;
+        });

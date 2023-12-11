@@ -8,17 +8,37 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+class Food_Post_Upload(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    filename = db.Column(db.String(50))
+    data = db.Column(db.LargeBinary)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'),nullable=False)
+
+class Post(db.Model, UserMixin):
+    content = db.Column(db.String(2000),nullable=False)
+    city = db.Column(db.String(200),nullable=False)
+    datePosted = db.Column(db.DateTime,default=datetime.now(),nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200),nullable=False)
+    uploads = db.relationship('Food_Post_Upload',backref='belongs_to_post',lazy=True)
+    rating = db.Column(db.Integer,nullable=False)
+    stream = db.Column(db.Boolean,default=False,nullable=True)
+    title = db.Column(db.String(200),nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
+
+    def __repr__(self):
+        return f"User('{self.title},'{self.datePosted}','{self.id})"
+
+class Profile_Pic_Upload(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    filename = db.Column(db.String(50))
+    data = db.Column(db.LargeBinary)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
+
 user_post = db.Table('user_post',
     # db.Column( db.Integer, primary_key=True),
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('post_id', db.Integer, db.ForeignKey('post.id')))
-
-# class User_Post(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     user = db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
-#     post = db.Column('post_id', db.Integer, db.ForeignKey('post.id'))
-#     def __repr__(self):
-#         return f"User('{self.user}','{self.post}')"
 
 class User(db.Model, UserMixin):
     email = db.Column(db.String(120),unique=True,nullable=False)
@@ -45,28 +65,3 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username},'{self.email}','{self.password},'{self.image_file})"
     
-class Post(db.Model, UserMixin):
-    content = db.Column(db.String(2000),nullable=False)
-    city = db.Column(db.String(200),nullable=False)
-    datePosted = db.Column(db.DateTime,default=datetime.utcnow,nullable=False)
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200),nullable=False)
-    uploads = db.relationship('Food_Post_Upload',backref='belongs_to_post',lazy=True)
-    rating = db.Column(db.Integer,nullable=False)
-    title = db.Column(db.String(200),nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
-
-    def __repr__(self):
-        return f"User('{self.title},'{self.datePosted}','{self.id})"
-    
-class Food_Post_Upload(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    filename = db.Column(db.String(50))
-    data = db.Column(db.LargeBinary)
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'),nullable=False)
-
-class Profile_Pic_Upload(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    filename = db.Column(db.String(50))
-    data = db.Column(db.LargeBinary)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)

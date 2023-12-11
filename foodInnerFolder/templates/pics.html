@@ -1,6 +1,0 @@
-{% extends 'layout.html' %}
-{%block content %}
-{% for pic in pics %}
-    <img src="{{ url_for('main.download', id=pic.id) }}" />
-{% endfor %}
-{% endblock content %}

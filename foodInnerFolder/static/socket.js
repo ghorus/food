@@ -3,18 +3,18 @@ var socket = io();
 const likeButton = document.getElementsByClassName("likeButton")
 const totalLikes = document.getElementsByClassName("totalLikes")
 Array.from(likeButton).forEach(like => {
-        $(like).unbind('click').click(function(){
-        // socket.on('like',(data)=>{
-        //     like.nextElementSibling.innerHTML = data + " Likes"
-        // })
-        // socket.emit('like',like.id)
+        like.addEventListener('click',function(){
+        socket.on('like',(data)=>{
+            like.nextElementSibling.innerHTML = data + " Likes"
+        })
+        socket.emit('like',like.id)
 })
 })
 // socket.on('redirect', (dest) => {
 //     window.location.href = dest;
 //     });
 
-//streaming
+
 // const myVideo = document.createElement("video")
 // var peer = new Peer();
 // const videoGrid = document.getElementById("video-grid")
@@ -38,14 +38,6 @@ Array.from(likeButton).forEach(like => {
 //             function connectToNewUser(id,stream){
 //                 const call = peer.call(id,stream)
 //                 //     const vid = document.createElement('video')
-//                 call.on('stream',userVidStream=>{
-//                     // addVidStream(vid,userVidStream)
-//                     console.log('calling ' + id, userVidStream)
-//                 })
-//                 //     call.on('close',()=>{
-//                 //         vid.remove()
-//                 //         console.log('user left')
-//                 //     })
 //             }
 //         })
 //         peer.on('open', id => {
@@ -53,12 +45,17 @@ Array.from(likeButton).forEach(like => {
 //             });
 //     })
         
-//     function addVidStream(video,stream){
-//         video.srcObject = stream
-//         video.addEventListener('loadedmetadata',()=>{
-//             video.play()
-//         })
-//         videoGrid.append(video)
-//         }
+// function addVidStream(video,stream){
+//     video.srcObject = stream
+//     video.addEventListener('loadedmetadata',()=>{
+//         video.play()
+//     })
+//     videoGrid.append(video)
+//     }
 // }
-     
+// else{
+//     peer.on('call',call=>{
+//         call.answer(stream)
+// })
+// }
+    

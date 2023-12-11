@@ -5,11 +5,11 @@ const totalLikes = document.getElementsByClassName("totalLikes")
 Array.from(likeButton).forEach(like => {
         $(like).unbind('click').click(function(){
         socket.emit('like',like.id)
-        // socket.on('like',(data)=>{
-        //     like.nextElementSibling.innerHTML = data + " Likes"
+        socket.on('like',(data)=>{
+            like.nextElementSibling.innerHTML = data + " Likes"
         })
 })
-// })
+})
 // socket.on('redirect', (dest) => {
 //     window.location.href = dest;
 //     });
@@ -37,6 +37,9 @@ Array.from(likeButton).forEach(like => {
 //             connectToNewUser(id,stream)
 //             function connectToNewUser(id,stream){
 //                 const call = peer.call(id,stream)
+//                 peer.on('call',call=>{
+//                     call.answer(stream)
+//                  })
 //                 //     const vid = document.createElement('video')
 //             }
 //         })
@@ -52,10 +55,5 @@ Array.from(likeButton).forEach(like => {
 //     })
 //     videoGrid.append(video)
 //     }
-// }
-// else{
-//     peer.on('call',call=>{
-//         call.answer(stream)
-// })
 // }
     

@@ -20,26 +20,26 @@
         <section class="links">
             {% if current_user.is_authenticated %}
                 <span class="logoContainer">
-                    <a class="link" href="{{url_for('main.home')}}"><img class="logoImage" src="{{url_for('static', filename = 'food.jpg')}}"></a>
+                    <a class="logoLink" href="{{url_for('main.home')}}"><img class="logoImage" src="{{url_for('static', filename = 'food.jpg')}}"></a>
                     {% if users %}
                     <span class="totalUsers">{{users}} current user{% if users > 1 %}s{%endif%} total!</span>
                     {% endif %}
                 </span>
                 <span class="nonLogoLinks">
                     <a class="link" href="{{url_for('users.account')}}">Account</a>
-                    <a class="link" href="{{url_for('game.gamerooms')}}">Games</a>
+                    <a class="link" href="{{url_for('game.joingameroom')}}">Games</a>
                     <a class="link" href="{{url_for('users.new_post')}}">Create a Post</a>
                     <a class="link" href="{{url_for('users.logout')}}">Logout</a>
                 </span>
             {% else %}
                 <span class="logoContainer">
-                    <a class="link" href="{{url_for('main.home')}}"><img class="logoImage" src="{{url_for('static', filename = 'food.jpg')}}"></a>
+                    <a class="logoLink" href="{{url_for('main.home')}}"><img class="logoImage" src="{{url_for('static', filename = 'food.jpg')}}"></a>
                     {% if users %}
                     <span class="totalUsers">{{users}} current users total!</span>
                     {% endif %}
                 </span>
                 <span class="nonLogoLinks">
-                        <a class="link" href="{{url_for('game.gamerooms')}}">Games</a>
+                        <a class="link" href="{{url_for('game.joingameroom')}}">Games</a>
                         <a class="link" href="{{url_for('users.register')}}">Register</a>
                         <a class="link" href="{{url_for('users.login')}}">Login</a>
                 </span>

@@ -1,28 +1,18 @@
 {% extends 'layout.html' %}
 {% block content %}
 {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <p class={{category}}>{{message}}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-<form action="" method="POST" novalidate>
-    {{form.hidden_tag()}}
-    {{form.name.label}}
-    {{form.name}}
-    {% if form.name.errors %}
-        {% for error in form.name.errors %}
-        <p class="danger">{{error}}</p>
+    {% if messages %}
+        {% for category, message in messages %}
+            <p class={{category}}>{{message}}</p>
         {% endfor %}
     {% endif %}
-    {{form.submit}}
-</form>
+{% endwith %}
+<h1>Join Room</h1>
 <hr>
 <h1>{{gamerooms | length}} active room{%if gamerooms | length > 1 %}s{% endif %}</h1>
 {% for gameroom in gamerooms %}
     <br>
-    {{gameroom.name}}{{gameroom.room_link}}
+    {{gameroom.room_link}} {{gameroom.name}} 
     <form action="" method="POST" novalidate>
         {{joinForm.hidden_tag()}}
         <span style="display:none;">{{joinForm.member(value=current_user.id)}}</span>

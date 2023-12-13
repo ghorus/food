@@ -34,7 +34,7 @@
             </div>
             
             <div class="likeContainer">
-                <input class="likeButton" alt="Submit" id={{post.id}} src="{{url_for('static', filename = 'post_pics/heart.png')}}"  type="image"/><span class="totalLikes">{{post.liker|length}} Likes</span>
+                <input class="likeButton" id={{post.id}} src="{{url_for('static', filename = 'post_pics/heart.png')}}"  type="image"/><span class="totalLikes">{{post.liker|length}} Likes</span>
             </div>    
             {% if post.author == current_user %}
                 <div class="updateDeleteContainer">

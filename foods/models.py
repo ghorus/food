@@ -21,12 +21,14 @@ class Game_Room(db.Model,UserMixin):
 
 class Game_Room_Members(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key = True)
-    member_id = db.Column(db.Integer,nullable=False)
+    member_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
     room_id = db.Column(db.String(4),nullable=False)
 
-# class Game_Room_Messages(db.Model,UserMixin):
-#     member_id = db.Column(db.Integer, db.ForeignKey('game_room.id'),nullable=False)
-#     member_message_id = db.Column(db.Integer, db.ForeignKey('game_room_members.id'),nullable=False)
+class Game_Room_Messages(db.Model,UserMixin):
+    id = db.Column(db.Integer, primary_key = True)
+    member_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
+    member_message = db.Column(db.String(50),nullable=False)
+    room_id = db.Column(db.String(4),nullable=False)
 
 class Post(db.Model, UserMixin):
     content = db.Column(db.String(2000),nullable=False)
@@ -57,6 +59,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120),unique=True,nullable=False)
     id = db.Column(db.Integer, primary_key=True)
     likes = db.relationship('Post', secondary=user_post, backref='liker')
+    member = db.relationship('Game_Room_Members',backref='member',lazy=True)
+    messages = db.relationship('Game_Room_Messages',backref='author',lazy=True)
     password = db.Column(db.String(60), nullable = False)
     posts = db.relationship('Post',backref='author',lazy=True)
     uploads = db.relationship('Profile_Pic_Upload',backref='pic_owner',lazy=True)
@@ -76,5 +80,5 @@ class User(db.Model, UserMixin):
         return User.query.get(user_id)
 
     def __repr__(self):
-        return f"User('{self.username},'{self.email}','{self.password},'{self.image_file})"
+        return f"User('{self.username},'{self.email}','{self.password},'{self.uploads})"
     

@@ -1,5 +1,32 @@
 {% extends 'layout.html' %}
 {% block content %}
-
-
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <p class={{category}}>{{message}}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<p class="flashMessage danger"></p>
+<div>
+    Room members: <span class="roomLink">{{link}}</span>
+    {% for member in members %}
+    {{member.member.username}}
+    {% endfor %}
+</div>
+<div class="messagesContainer">
+    {% for message in messages %}
+        {% if message.room_id == link %}
+            <span>{{message.member_message}} </span>
+        {% endif %}
+    {% endfor %}
+</div>
+    {{messageForm.message.label}}
+    {{messageForm.message(class_="gameMessage")}}
+    {% if messageForm.message.errors %}
+        {% for error in messageForm.message.errors %}
+        <p class="danger">{{error}}</p>
+        {% endfor %}
+    {% endif %}
+    {{messageForm.submit(class_="gameMessageSubmit")}}
 {% endblock content %}

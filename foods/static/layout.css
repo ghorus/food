@@ -1,0 +1,109 @@
+:root{
+    --bg:rgb(255, 255, 255);
+    --formButtonSize:100px;
+    --postBackground:rgb(255, 255, 255);
+    --postPicSize:70px;
+    --postSize:700px;
+    --postMenuWidth:230px;
+}
+a{color:rgb(0, 0, 0); text-decoration: none;}
+a:hover{color:rgb(184, 184, 255)}
+body{background-color: var(--bg);color:rgb(0, 0, 0); font-family: 'Nunito Sans', sans-serif;margin:0;}
+.danger{color: rgb(255, 90, 90);}
+.formButton{
+    background-color:rgb(67, 67, 255);
+    border: none; 
+    border-radius: 50%; 
+    color:rgb(0, 0, 0); 
+    font-family: 'Nunito Sans', sans-serif;
+    height:var(--formButtonSize);
+    width:var(--formButtonSize);}
+.formContainer{align-items: center; display: flex;flex-direction: column;}
+.formInput{background-color: var(--bg);border: none; color:rgb(160, 160, 160); height:30px;}
+.formInput:focus{outline: none;}
+.formInput,.formSubtitle{font-size:22px;}
+.formInsideContainer{display: flex;flex-direction: column;}
+.formSubtitle{margin:0px 0px 10px 0px;}
+.formTextArea{font-family: 'Nunito Sans', sans-serif;}
+.formTitle{font-size: 66px;text-align: center;}
+.hr{border-bottom: 1px solid rgb(99, 99, 99);height:1px;margin:30px 0px; width:45vw;}
+.info{color: rgb(255, 161, 54);}
+.likeButton{height:30px;padding:0px 10px 0px 0px;}
+.likeButton:hover{filter: brightness(2);}
+.likeContainer{align-items: center; display: flex; padding:0px 0px 10px 10px;}
+.links{align-items: center; display: flex; justify-content: space-between}
+.link:first-child{margin:0;}
+.logoContainer{align-items: center; display: flex;flex-direction: column;justify-content: center;}
+.logoImage{height: 40px;}
+.menuPic,.menuPicItem{border-radius: 50%; height:30px;object-fit: cover;padding:5px;transition: 0.1s; width:30px;}
+.menuPic{display: inline;margin:0px 0px 10px 0px;}
+.menuPic:hover{background-color: rgb(90, 90, 90);}
+.menuPicItemContainer{align-items: center; display: grid; grid-template-columns: 1fr 3fr; width: var(--postMenuWidth);}
+.menuPicItemContainer:hover{background-color: rgb(255, 117, 117);}
+.menuPicItemsContainer{border: 1px solid rgb(168, 168, 168);border-radius: 8px; padding:10px;}
+nav{border-bottom: 1px solid rgb(231, 231, 231);margin:0px 0px 30px 0px; padding:20px;}
+.post{
+    border: 1px solid rgb(175, 175, 175);
+    border-radius: 5px; 
+    background-color: var(--postBackground); 
+    display: flex;
+    flex-direction: column; 
+    margin:0px 0px 30px 0px; 
+    overflow: hidden;
+    position:relative;
+    width:var(--postSize);}
+.postContainer{display: flex;justify-content: center;}
+.postContent{margin:0;}
+.postContents{padding:20px 0px 0px 0px;}
+.postDeleteButton{background-color: rgb(41, 41, 41);border:none;border-radius: 7px; color:white; font-family: 'Nunito Sans', sans-serif;font-size: 16px; height:30px; width:60px}
+.postDeleteButton:hover{background-color: black}
+.postFoodPic{height:510px;object-fit: contain; width:var(--postSize);}
+.postFoodPicContainer{background-color:rgb(243, 243, 243);}
+.postUserPic{border-radius: 6px; height:var(--postPicSize);width:var(--postPicSize);margin:0px 20px 0px 0px;object-fit: cover;}
+.postUserPicContainer{display: flex;}
+.postUserPicPaddingContainer{padding: 20px;}
+.postTime{color:gray;font-size: 14px;}
+.postTitle{font-size:30px;margin:0;}
+.postUserTime{display: flex;flex-direction: column;}
+.profilePic{border-radius: 50%; height:90px;width:90px;margin:0px 20px 0px 0px;object-fit: cover;}
+.profileText{font-size: 29px; margin:0;}
+.profileText:last-child{font-size: 17px;font-weight: lighter;}
+.link{font-size: 18px; margin:0px 0px 0px 35px;transition: 0.2s;}
+.success{color:green;}
+.totalUsers{color:gray; font-size:13px;}
+.updateDeleteContainer{
+    align-items: end;
+    display: flex;
+    flex-direction: column;
+    height: 40px;
+    overflow: hidden;
+    position:absolute;
+    right:10px;
+    top:10px;
+    width:var(--postMenuWidth)+5px;
+}
+.userProfile{align-items:center;display: flex;}
+.warning{color: rgb(255, 255, 156);}
+
+@keyframes newUser {
+    0%{transform: translateY(-5px);}
+    50%{transform: translateY(5px);}
+    100%{transform: translateY(0px);}
+}
+@keyframes newLike {
+    0%{transform: translateX(-5px);}
+    50%{transform: translateX(5px);}
+    100%{transform: translateX(0px);}
+}
+@media screen and (max-width:1370px){
+    .hr{width:75vw}
+}
+@media screen and (max-width:725px){
+    .links{flex-direction: column;}
+    .post{width:95%;}
+    .postFoodPic{width: 100%;height:100%;}
+}
+@media screen and (max-width:510px){
+    .formTitle{font-size: 50px;}
+    .nonLogoLinks{display: flex;flex-direction: column;}
+}

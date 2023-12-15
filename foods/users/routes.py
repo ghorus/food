@@ -106,6 +106,7 @@ def register():
         db.session.commit()
         totalUsers = len(User.query.all())
         socketio.emit('total users',totalUsers)
+        app.logger.warning(totalUsers)
         flash('Your account has been created.','success')
         return redirect(url_for('users.login'))
     return render_template('users/register.html',form=form,title='Register')

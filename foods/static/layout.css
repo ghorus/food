@@ -71,6 +71,7 @@ nav{border-bottom: 1px solid rgb(231, 231, 231);margin:0px 0px 30px 0px; padding
 .link{font-size: 18px; margin:0px 0px 0px 35px;transition: 0.2s;}
 .success{color:green;}
 .totalUsers{color:gray; font-size:13px;}
+.totalUsersAnimation{animation: newUser 0.2s;}
 .updateDeleteContainer{
     align-items: end;
     display: flex;

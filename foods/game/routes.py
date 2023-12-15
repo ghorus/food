@@ -31,9 +31,10 @@ def creategameroom():
 @login_required
 def gameroom(link):
     messageForm = GameRoomMessageForm()
+    room_info = Game_Room.query.filter_by(room_link = link).first()
     members = Game_Room_Members.query.filter_by(room_id=link).all()
     messages = Game_Room_Messages.query.all()
-    return render_template("game/gameroom.html",link=link,members=members,messages=messages, messageForm=messageForm)
+    return render_template("game/gameroom.html",link=link,members=members,messages=messages, messageForm=messageForm,room_info=room_info)
 
 @socketio.on("send game message")
 def sendGameMessage(data):

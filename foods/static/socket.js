@@ -28,6 +28,7 @@ socket.on('total users',data=>{
 const flash_message = document.querySelector(".flashMessage")
 const gameMessage = document.querySelector(".gameMessage")
 const messagesContainer = document.querySelector(".messagesContainer")
+const roomLink = document.querySelector(".roomLink")
 const submit = document.querySelector(".gameMessageSubmit")
 submit.addEventListener('click',()=>{
     socket.emit('send game message',({message:gameMessage.value,link:roomLink.innerHTML}))

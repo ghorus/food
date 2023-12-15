@@ -1,6 +1,6 @@
 //socket home likes
 var socket = io();
-var likes = io('/likes')
+var likes = io('https://food-v6q5.onrender.com/likes')
 const likeButton = document.getElementsByClassName("likeButton")
 const totalLikes = document.getElementsByClassName("totalLikes")
 Array.from(likeButton).forEach(like => {
@@ -12,7 +12,7 @@ Array.from(likeButton).forEach(like => {
         })
 })
 })
-socket.on('redirect', (dest) => {
+likes.on('redirect', (dest) => {
     window.location.href = dest;
 });
 //total users

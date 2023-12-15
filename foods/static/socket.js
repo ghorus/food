@@ -52,8 +52,19 @@ messaging.on('flashy',(data)=>{
 //postAdlib
 var posting = io('https://food-v6q5.onrender.com/posting')
 function postAdlib(){
-    console.log(messagesContainer.innerHTML)
-    posting.emit('post adlib',messagesContainer.innerHTML)
+    const allAdlibs = messagesContainer.innerHTML
+    const allMembers = document.querySelectorAll(".memberIds")
+    const roomTitle = document.querySelector(".roomTitle").innerHTML
+    var totalMembers = ""
+    for(i=0;i<allMembers.length;i++){
+        totalMembers += allMembers[i].innerHTML
+    }
+    console.log(totalMembers)
+    var data={adlibs:allAdlibs,
+        members:totalMembers,
+        roomTitle:roomTitle,
+        room_link:roomLink.innerHTML}
+    posting.emit('post adlib',data)
 }
 posting.on('redirect', (dest) => {
     window.location.href = dest;

@@ -12,10 +12,12 @@ game = Blueprint('game',__name__)
 def room_id_generator(size=4, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
+#all adlib posts
 @game.route("/adlibposts",methods=['GET','POST'])
 def adlibposts():
     adlib_posts = AdlibPost.query.all()
-    return render_template("game/adlibposts.html",adlib_posts=adlib_posts)
+    auths = User.query.all()
+    return render_template("game/adlibposts.html",adlib_posts=adlib_posts,auths=auths)
 
 @game.route("/creategameroom",methods=['GET','POST'])
 @login_required
@@ -41,13 +43,47 @@ def gameroom(link):
     messages = Game_Room_Messages.query.all()
     return render_template("game/gameroom.html",link=link,members=members,messages=messages, messageForm=messageForm,room_info=room_info)
 
+@game.route("/joingameroom",methods=['GET','POST'])
+@login_required
+def joingameroom():
+    joinForm = JoinRoomForm()
+    gamerooms = Game_Room.query.all()
+    if joinForm.validate_on_submit():
+        members = Game_Room_Members.query.filter_by(room_id=joinForm.room.data).all()
+        newMember = None
+        for member in members:
+            if member.member_id == current_user.id:
+                newMember = member.member_id
+        if not newMember:
+            newMember = Game_Room_Members(member_id=current_user.id,room_id=joinForm.room.data)
+            db.session.add(newMember)
+            db.session.commit()
+        return redirect(url_for('game.gameroom',link=joinForm.room.data))
+    return render_template("game/joinroom.html",gamerooms=gamerooms,joinForm=joinForm)
+
 @socketio.on("post adlib",namespace='/posting')
 def postAdlib(data):
-    adlib = AdlibPost(content=data)
+    adlib = AdlibPost(authors=data['members'],content=data['adlibs'],title=data['roomTitle'])
     db.session.add(adlib)
     db.session.commit()
+    #delete all info from that room:room,members,&messages
+    room = Game_Room.query.filter_by(room_link=data['room_link']).first()
+    if room:
+        db.session.delete(room)
+        db.session.commit()
+    room_members = Game_Room_Members.query.filter_by(room_id=data['room_link']).all()
+    room_messages = Game_Room_Messages.query.filter_by(room_id=data['room_link']).all()
+    if room_members:
+        for member in room_members:
+            db.session.delete(member)
+            db.session.commit()
+    if room_messages:
+        for message in room_messages:
+            db.session.delete(message)
+            db.session.commit()
     emit('redirect', url_for('game.adlibposts'))
 
+#create adlib message in game room
 @socketio.on("send game message",namespace='/messaging')
 def sendGameMessage(data):
     user_is_member = False
@@ -61,8 +97,8 @@ def sendGameMessage(data):
     if user_is_member == True:
         room = Game_Room.query.filter_by(room_link=data['link']).first()
         room_turn = room.turn
-        app.logger.warning(ms[room_turn])
         current_member_turn = User.query.filter_by(id=ms[room_turn]).first()
+        #if not their turn, flash message
         if ms[room_turn] != current_user.id:
             emit('flashy',f"It\'s {current_member_turn.username}\'s turn!")
         #if it is the member's turn, then do this
@@ -90,21 +126,3 @@ def sendGameMessage(data):
         if message.room_id == data['link']:
             msgs.append(message.member_message)
     emit('send game message',msgs)
-
-@game.route("/joingameroom",methods=['GET','POST'])
-@login_required
-def joingameroom():
-    joinForm = JoinRoomForm()
-    gamerooms = Game_Room.query.all()
-    if joinForm.validate_on_submit():
-        members = Game_Room_Members.query.filter_by(room_id=joinForm.room.data).all()
-        newMember = None
-        for member in members:
-            if member.member_id == current_user.id:
-                newMember = member.member_id
-        if not newMember:
-            newMember = Game_Room_Members(member_id=current_user.id,room_id=joinForm.room.data)
-            db.session.add(newMember)
-            db.session.commit()
-        return redirect(url_for('game.gameroom',link=joinForm.room.data))
-    return render_template("game/joinroom.html",gamerooms=gamerooms,joinForm=joinForm)

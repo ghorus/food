@@ -10,6 +10,8 @@ def load_user(user_id):
 
 class AdlibPost(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(200),nullable=False)
+    authors = db.Column(db.String(30),nullable=False)
     content = db.Column(db.String(2000),nullable=False)
 
 class Food_Post_Upload(db.Model):

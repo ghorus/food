@@ -8,18 +8,25 @@
     {% endif %}
 {% endwith %}
 <p class="flashMessage danger"> </p>
-<h1>{{room_info.name}}</h1>
 <div>
+    <!--room info-->
     <span class="roomLink">{{link}}</span>
     {% for member in members %}
-        {{member.member.username}}
-        {% if member.member.uploads %}
-            {% for uploads in member.member.uploads %}
-                <img class="postUserPic" src="{{ url_for('main.upload', id=uploads.id) }}" alt="">
-            {% endfor %}
-        {% endif %}
+        <div class="memberContainer">
+            {% if member.member.uploads %}
+                {% for uploads in member.member.uploads %}
+                    <img class="postUserPic" src="{{ url_for('main.upload', id=uploads.id) }}" alt="">
+                {% endfor %}
+            {% endif %}
+            {{member.member.username}}
+        </div>
     {% endfor %}
+    {% for member in range(members|length) %}
+        <span class="memberIds">{{members[member].member_id}}</span>
+    {% endfor %}
+    <h1 class="roomTitle">{{room_info.name}}</h1>
 </div>
+<!--all current adlibs-->
 <div class="messagesContainer">
     {% for message in messages %}
         {% if message.room_id == link %}{{message.member_message}} {% endif %}
@@ -34,5 +41,6 @@
     {% endif %}
     {{messageForm.submit(class_="gameMessageSubmit")}}
 <hr>
+<!--finish and post adlib -->
 <button onclick="postAdlib()">Post Adlib</button>
 {% endblock content %}

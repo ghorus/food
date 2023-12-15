@@ -2,7 +2,17 @@
 {% block content %}
 <h1>Completed Adlibs to Read :&rpar;</h1>
 {% for post in adlib_posts %}
+    <h1>{{post.title}}</h1>
     <p>{{post.content}}</p>
+    <p>by 
+        {% for author in post.authors %}
+            {% for a in auths %}
+                {% if a.id == author|int %}
+                    {{a.username}}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </p>
     <hr>
 {% endfor %}
 {% endblock content %}

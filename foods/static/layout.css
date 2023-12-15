@@ -34,6 +34,7 @@ body{background-color: var(--bg);color:rgb(0, 0, 0); font-family: 'Nunito Sans',
 .links{align-items: center; display: flex; justify-content: space-between}
 .logoContainer{align-items: center; display: flex;flex-direction: column;justify-content: center;}
 .logoImage{height: 40px;}
+.memberContainer{border: 1px solid gray;border-radius: 5px;padding:5px;width:250px;}
 .menuPic,.menuPicItem{border-radius: 50%; height:30px;object-fit: cover;padding:5px;transition: 0.1s; width:30px;}
 .menuPic{display: inline;margin:0px 0px 10px 0px;}
 .menuPic:hover{background-color: rgb(90, 90, 90);}

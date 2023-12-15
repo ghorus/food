@@ -1,7 +1,8 @@
 //socket home likes
 var socket = io();
-var ios = io.connect('http://127.0.0.1:5000')
-var likes = io('http://127.0.0.1:5000/likes')
+//https://food-v6q5.onrender.com/
+var ios = io.connect('https://food-v6q5.onrender.com/')
+var likes = io('https://food-v6q5.onrender.com//likes')
 const likeButton = document.getElementsByClassName("likeButton")
 const totalLikes = document.getElementsByClassName("totalLikes")
 Array.from(likeButton).forEach(like => {
@@ -25,8 +26,8 @@ socket.on('total users',data=>{
         displayTotalUsers.classList.add('totalUsersAnimation');
     },10);
 })
-
-//game messaging
+// // game messaging
+// var messaging = io('http://127.0.0.1:5000/messaging')
 // const flash_message = document.querySelector(".flashMessage")
 // const gameMessage = document.querySelector(".gameMessage")
 // const messagesContainer = document.querySelector(".messagesContainer")

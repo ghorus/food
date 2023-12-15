@@ -1,7 +1,11 @@
 //socket home likes
+const io = required("socket.io-client")
+let games = io.connect("http://127.0.0.1:5000/home")
+games.on('connect',console.log('hi'))
 var socket = io();
 const likeButton = document.getElementsByClassName("likeButton")
 const totalLikes = document.getElementsByClassName("totalLikes")
+
 Array.from(likeButton).forEach(like => {
         $(like).unbind('click').click(function(){
         socket.emit('like',like.id)
@@ -34,16 +38,16 @@ submit.addEventListener('click',()=>{
     socket.emit('send game message',({message:gameMessage.value,link:roomLink.innerHTML}))
     gameMessage.value=""
 })
-socket.on('send game message',(words)=>{
-    messagesContainer.innerHTML = ""
-    for(i=0;i<words.length;i++){
-        messagesContainer.innerHTML = messagesContainer.innerHTML + words[i] + " "
-    }
-})
-socket.on('flashy',(data)=>{
-    flash_message.innerHTML = data
-    flash_message.classList.remove('totalUsersAnimation');
-    setTimeout(function(){
-        flash_message.classList.add('totalUsersAnimation');
-    },10);
-})
+// socket.on('send game message',(words)=>{
+//     messagesContainer.innerHTML = ""
+//     for(i=0;i<words.length;i++){
+//         messagesContainer.innerHTML = messagesContainer.innerHTML + words[i] + " "
+//     }
+// })
+// socket.on('flashy',(data)=>{
+//     flash_message.innerHTML = data
+//     flash_message.classList.remove('totalUsersAnimation');
+//     setTimeout(function(){
+//         flash_message.classList.add('totalUsersAnimation');
+//     },10);
+// })

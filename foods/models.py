@@ -18,6 +18,7 @@ class Game_Room(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(200),nullable=False)
     room_link = db.Column(db.String(4),nullable=False)
+    turn = db.Column(db.Integer,nullable=False)
 
 class Game_Room_Members(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key = True)

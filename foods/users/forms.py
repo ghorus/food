@@ -6,7 +6,7 @@ from wtforms import BooleanField,IntegerField,PasswordField,StringField,SubmitFi
 from wtforms.validators import DataRequired, Length,NumberRange, EqualTo, Email, ValidationError
 
 class CreateGameRoomForm(FlaskForm):
-    name = StringField('Room Name', validators=[DataRequired()],render_kw={"placeholder": "Name of room here*"})
+    name = StringField('Title of Adlib', validators=[DataRequired()],render_kw={"placeholder": "Title of your adlib here*"})
     submit = SubmitField('Create Game')
 
 class GameRoomMessageForm(FlaskForm):

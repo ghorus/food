@@ -7,11 +7,16 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
-<p class="flashMessage danger"></p>
+<p class="flashMessage danger"> </p>
 <div>
-    Room members: <span class="roomLink">{{link}}</span>
+    <span class="roomLink">{{link}}</span>
     {% for member in members %}
-    {{member.member.username}}
+        {{member.member.username}}
+        {% if member.member.uploads %}
+            {% for uploads in member.member.uploads %}
+                <img class="postUserPic" src="{{ url_for('main.upload', id=uploads.id) }}" alt="">
+            {% endfor %}
+        {% endif %}
     {% endfor %}
 </div>
 <div class="messagesContainer">

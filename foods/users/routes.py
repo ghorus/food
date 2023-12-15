@@ -46,6 +46,9 @@ def delete_post(post_id):
     post = Post.query.get(post_id)
     if post.author != current_user:
         abort(403)
+    if post.uploads:
+        foodPic = Food_Post_Upload.query.filter_by(post_id=post_id).first()
+        db.session.delete(foodPic)
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted.','success')
@@ -106,7 +109,6 @@ def register():
         db.session.commit()
         totalUsers = len(User.query.all())
         socketio.emit('total users',totalUsers)
-        app.logger.warning(totalUsers)
         flash('Your account has been created.','success')
         return redirect(url_for('users.login'))
     return render_template('users/register.html',form=form,title='Register')

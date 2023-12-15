@@ -8,6 +8,10 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+class AdlibPost(db.Model,UserMixin):
+    id = db.Column(db.Integer, primary_key = True)
+    content = db.Column(db.String(2000),nullable=False)
+
 class Food_Post_Upload(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     filename = db.Column(db.String(50))

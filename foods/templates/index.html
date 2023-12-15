@@ -31,11 +31,7 @@
                     <a href="{{url_for('users.post',post_id=post.id)}}"><h3 class="postTitle" style="display:inline">{{post.title}}</h3></a>
                     <p class="postContent">{{post.content}}</p>
                 </div>
-            </div>
-            
-            <div class="likeContainer">
-                <input class="likeButton" id={{post.id}} src="{{url_for('static', filename = 'post_pics/heart.png')}}"  type="image"/><span class="totalLikes">{{post.liker|length}} Likes</span>
-            </div>    
+            </div> 
             {% if post.author == current_user %}
                 <div class="updateDeleteContainer">
                     <img class="menuPic" src="{{url_for('static', filename = 'post_pics/menu.png')}}">
@@ -62,7 +58,10 @@
                     {% endfor %}
                 {% endif %}
             </div>
-</section>
+            <div class="likeContainer">
+                <input class="likeButton" id={{post.id}} src="{{url_for('static', filename = 'post_pics/heart.png')}}"  type="image"/><span class="totalLikes">{{post.liker|length}} Likes</span>
+            </div>   
+        </section>
     </div>
 {% endfor %}
 {% for page_num in posts.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=1) %}

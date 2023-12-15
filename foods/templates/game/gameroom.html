@@ -22,9 +22,7 @@
 </div>
 <div class="messagesContainer">
     {% for message in messages %}
-        {% if message.room_id == link %}
-            <span>{{message.member_message}} </span>
-        {% endif %}
+        {% if message.room_id == link %}{{message.member_message}} {% endif %}
     {% endfor %}
 </div>
     {{messageForm.message.label}}
@@ -35,4 +33,6 @@
         {% endfor %}
     {% endif %}
     {{messageForm.submit(class_="gameMessageSubmit")}}
+<hr>
+<button onclick="postAdlib()">Post Adlib</button>
 {% endblock content %}

@@ -2,8 +2,8 @@ from flask import Blueprint,render_template,redirect,url_for
 from flask_login import login_required,current_user
 from flask_socketio import emit,join_room
 from foods import socketio,app,db
-from foods.models import Game_Room,Game_Room_Members,Game_Room_Messages,User
-from foods.users.forms import CreateGameRoomForm,GameRoomMessageForm,JoinRoomForm,PostAdlibForm
+from foods.models import AdlibPost,Game_Room,Game_Room_Members,Game_Room_Messages,User
+from foods.users.forms import CreateGameRoomForm,GameRoomMessageForm,JoinRoomForm
 import random 
 import string
 
@@ -11,6 +11,11 @@ game = Blueprint('game',__name__)
 
 def room_id_generator(size=4, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
+
+@game.route("/adlibposts",methods=['GET','POST'])
+def adlibposts():
+    adlib_posts = AdlibPost.query.all()
+    return render_template("game/adlibposts.html",adlib_posts=adlib_posts)
 
 @game.route("/creategameroom",methods=['GET','POST'])
 @login_required
@@ -34,8 +39,14 @@ def gameroom(link):
     room_info = Game_Room.query.filter_by(room_link = link).first()
     members = Game_Room_Members.query.filter_by(room_id=link).all()
     messages = Game_Room_Messages.query.all()
-    postAdlibForm = PostAdlibForm()
     return render_template("game/gameroom.html",link=link,members=members,messages=messages, messageForm=messageForm,room_info=room_info)
+
+@socketio.on("post adlib",namespace='/posting')
+def postAdlib(data):
+    adlib = AdlibPost(content=data)
+    db.session.add(adlib)
+    db.session.commit()
+    emit('redirect', url_for('game.adlibposts'))
 
 @socketio.on("send game message",namespace='/messaging')
 def sendGameMessage(data):

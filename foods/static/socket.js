@@ -48,3 +48,13 @@ messaging.on('flashy',(data)=>{
         flash_message.classList.add('totalUsersAnimation');
     },10);
 })
+
+//postAdlib
+var posting = io('https://food-v6q5.onrender.com/posting')
+function postAdlib(){
+    console.log(messagesContainer.innerHTML)
+    posting.emit('post adlib',messagesContainer.innerHTML)
+}
+posting.on('redirect', (dest) => {
+    window.location.href = dest;
+});

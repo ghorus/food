@@ -1,0 +1,8 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Completed Adlibs to Read :&rpar;</h1>
+{% for post in adlib_posts %}
+    <p>{{post.content}}</p>
+    <hr>
+{% endfor %}
+{% endblock content %}

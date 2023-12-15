@@ -33,9 +33,6 @@ class PostForm(FlaskForm):
     title = StringField('Food Item Name and/or Number', validators=[DataRequired()],render_kw={"placeholder": "Title of your post*"})
     submit = SubmitField('Post')
 
-class PostAdlibForm(FlaskForm):
-    pass
-
 class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password',validators=[DataRequired(),EqualTo('password')],render_kw={"placeholder": "Confirm password here*"})
     email = StringField('Email', validators=[DataRequired(),Email()],render_kw={"placeholder": "Input email here*"})

@@ -30,7 +30,7 @@ body{background-color: var(--bg);color:rgb(0, 0, 0); font-family: 'Nunito Sans',
 .info{color: rgb(255, 161, 54);}
 .likeButton{height:30px;padding:0px 10px 0px 0px;}
 .likeButton:hover{filter: brightness(2);}
-.likeContainer{align-items: center; display: flex; padding:0px 0px 10px 10px;}
+.likeContainer{align-items: center; display: flex; padding:10px 0px 10px 10px;}
 .links{align-items: center; display: flex; justify-content: space-between}
 .logoContainer{align-items: center; display: flex;flex-direction: column;justify-content: center;}
 .logoImage{height: 40px;}
@@ -58,7 +58,7 @@ nav{border-bottom: 1px solid rgb(231, 231, 231);margin:0px 0px 30px 0px; padding
 .postDeleteButton{background-color: rgb(41, 41, 41);border:none;border-radius: 7px; color:white; font-family: 'Nunito Sans', sans-serif;font-size: 16px; height:30px; width:60px}
 .postDeleteButton:hover{background-color: black}
 .postFoodPic{height:510px;object-fit: contain; width:var(--postSize);}
-.postFoodPicContainer{background-color:rgb(243, 243, 243);}
+.postFoodPicContainer{background-color:rgb(245, 245, 245);}
 .postUserPic{border-radius: 6px; height:var(--postPicSize);width:var(--postPicSize);margin:0px 20px 0px 0px;object-fit: cover;}
 .postUserPicContainer{display: flex;}
 .postUserPicPaddingContainer{padding: 20px;}

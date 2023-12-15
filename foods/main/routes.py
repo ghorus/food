@@ -14,9 +14,9 @@ def home():
     usersTotal = len(User.query.all())
     return render_template('index.html',posts=posts,title="Home",users=usersTotal)
 
-@socketio.on('like')
+@socketio.on('like',namespace='/likes')
 def like(post_id):
-    app.logger.warning('user just liked something')
+    app.logger.warning('this is the post')
     if current_user.is_authenticated:
         user = User.query.filter_by(username=current_user.username).first()
         post = Post.query.filter_by(id=post_id).first()

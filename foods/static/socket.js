@@ -1,7 +1,4 @@
 //socket home likes
-const io = required("socket.io-client")
-let games = io.connect("http://127.0.0.1:5000/home")
-games.on('connect',console.log('hi'))
 var socket = io();
 const likeButton = document.getElementsByClassName("likeButton")
 const totalLikes = document.getElementsByClassName("totalLikes")

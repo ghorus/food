@@ -1,7 +1,5 @@
 //socket home likes
 var socket = io();
-//https://food-v6q5.onrender.com/
-var ios = io.connect('https://food-v6q5.onrender.com/')
 var likes = io('https://food-v6q5.onrender.com//likes')
 const likeButton = document.getElementsByClassName("likeButton")
 const totalLikes = document.getElementsByClassName("totalLikes")

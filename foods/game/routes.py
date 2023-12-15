@@ -37,11 +37,7 @@ def gameroom(link):
     postAdlibForm = PostAdlibForm()
     return render_template("game/gameroom.html",link=link,members=members,messages=messages, messageForm=messageForm,room_info=room_info)
 
-@socketio.on("connect",namespace="/messages")
-def sendGameMessage(data):
-    app.logger.warning(data)
-
-@socketio.on("send game message")
+@socketio.on("send game message",namespace='/messaging')
 def sendGameMessage(data):
     user_is_member = False
     members = Game_Room_Members.query.filter_by(room_id=data['link']).all()

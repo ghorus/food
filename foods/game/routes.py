@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,redirect,url_for
 from flask_login import login_required,current_user
-from flask_socketio import emit,join_room
+from flask_socketio import emit,join_room,send
 from foods import socketio,app,db
 from foods.models import AdlibPost,Game_Room,Game_Room_Members,Game_Room_Messages,User
 from foods.users.forms import CreateGameRoomForm,GameRoomMessageForm,JoinRoomForm
@@ -126,3 +126,9 @@ def sendGameMessage(data):
         if message.room_id == data['link']:
             msgs.append(message.member_message)
     emit('send game message',msgs,broadcast=True)
+
+@socketio.on("join",namespace='/join')
+def join(data):
+    app.logger.warning(data)
+    join_room(data)
+    send(data,to=data)

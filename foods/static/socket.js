@@ -1,6 +1,6 @@
 //socket home likes
 var socket = io();
-var likes = io('http://127.0.0.1:5000/likes')
+var likes = io('https://food-v6q5.onrender.com/likes')
 const likeButton = document.getElementsByClassName("likeButton")
 const totalLikes = document.getElementsByClassName("totalLikes")
 Array.from(likeButton).forEach(like => {
@@ -25,7 +25,7 @@ socket.on('total users',data=>{
     },10);
 })
 // game messaging
-var messaging = io('http://127.0.0.1:5000/messaging')
+var messaging = io('https://food-v6q5.onrender.com/messaging')
 const flash_message = document.querySelector(".flashMessage")
 const gameMessage = document.querySelector(".gameMessage")
 const messagesContainer = document.querySelector(".messagesContainer")
@@ -50,7 +50,7 @@ messaging.on('flashy',(data)=>{
 })
 
 //join room
-var join = io('http://127.0.0.1:5000/join')
+var join = io('https://food-v6q5.onrender.com/join')
 join.on('connect',()=>{if(roomLink != null){
     join.emit('join',roomLink.innerHTML);
 }})
@@ -58,7 +58,7 @@ join.on('message',data=>{
     console.log(data + 'hi')})
 
 //postAdlib
-var posting = io('http://127.0.0.1:5000/posting')
+var posting = io('https://food-v6q5.onrender.com/posting')
 function postAdlib(){
     const allAdlibs = messagesContainer.innerHTML
     const allMembers = document.querySelectorAll(".memberIds")

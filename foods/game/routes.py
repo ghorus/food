@@ -125,4 +125,4 @@ def sendGameMessage(data):
     for message in messages:
         if message.room_id == data['link']:
             msgs.append(message.member_message)
-    emit('send game message',msgs)
+    emit('send game message',msgs,broadcast=True)

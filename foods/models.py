@@ -66,6 +66,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120),unique=True,nullable=False)
     id = db.Column(db.Integer, primary_key=True)
     likes = db.relationship('Post', secondary=user_post, backref='liker')
+    # likesAdlib = db.relationship('Post', secondary=user_post, backref='adlibLiker')
     member = db.relationship('Game_Room_Members',backref='member',lazy=True)
     messages = db.relationship('Game_Room_Messages',backref='author',lazy=True)
     password = db.Column(db.String(60), nullable = False)

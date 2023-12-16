@@ -1,6 +1,6 @@
-from flask import Blueprint,render_template,redirect,url_for
+from flask import Blueprint,render_template,redirect,request,url_for
 from flask_login import login_required,current_user
-from flask_socketio import emit,join_room,send
+from flask_socketio import emit,join_room,leave_room,send
 from foods import socketio,app,db
 from foods.models import AdlibPost,Game_Room,Game_Room_Members,Game_Room_Messages,User
 from foods.users.forms import CreateGameRoomForm,GameRoomMessageForm,JoinRoomForm
@@ -125,10 +125,25 @@ def sendGameMessage(data):
     for message in messages:
         if message.room_id == data['link']:
             msgs.append(message.member_message)
-    emit('send game message',msgs,broadcast=True)
+    emit('send game message',msgs,room=data['link'])
 
-@socketio.on("join",namespace='/join')
+@socketio.on("join",namespace='/messaging')
 def join(data):
-    app.logger.warning(data)
-    join_room(data)
-    send(data,to=data)
+    join_room(data['roomLink'])
+    members = Game_Room_Members.query.filter_by(room_id=data['roomLink']).all()
+    members_usernames = []
+    for member in members:
+        user = User.query.filter_by(id=member.member_id).first()
+        members_usernames.append(user.username)
+    emit('members',members_usernames,room=data['roomLink'])
+
+@socketio.on('dc',namespace='/messaging')
+def on_leave(data):
+    room_members = Game_Room_Members.query.filter_by(room_id=data).all()
+    emit('flashy','someone left',broadcast=True)
+    for member in room_members:
+        if member.member_id == current_user.id:
+            db.session.delete(member)
+            db.session.commit()
+
+

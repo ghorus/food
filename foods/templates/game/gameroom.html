@@ -11,16 +11,12 @@
 <div>
     <!--room info-->
     <span class="roomLink">{{link}}</span>
-    {% for member in members %}
-        <div class="memberContainer">
-            {% if member.member.uploads %}
-                {% for uploads in member.member.uploads %}
-                    <img class="postUserPic" src="{{ url_for('main.upload', id=uploads.id) }}" alt="">
-                {% endfor %}
-            {% endif %}
+    <div class="memberContainer">
+        {% for member in members %}
             {{member.member.username}}
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+    <!--hidden info for deleting this entire room once members decide to post-->
     {% for member in range(members|length) %}
         <span class="memberIds">{{members[member].member_id}}</span>
     {% endfor %}

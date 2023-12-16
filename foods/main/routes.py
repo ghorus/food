@@ -1,4 +1,5 @@
 from flask import Blueprint,flash,redirect,render_template,request,send_file,url_for
+from flask_cors import cross_origin
 from flask_login import current_user
 from flask_socketio import emit, send
 from foods import db,socketio,app
@@ -8,6 +9,7 @@ from io import BytesIO
 main = Blueprint('main',__name__)
 
 @main.route("/")
+@cross_origin()
 def home():
     page = request.args.get('page',1,type=int)
     posts = Post.query.order_by(Post.datePosted.desc()).paginate(page=page,per_page=5)
@@ -16,7 +18,6 @@ def home():
 
 @socketio.on('like',namespace='/likes')
 def like(post_id):
-    app.logger.warning('this is the post')
     if current_user.is_authenticated:
         user = User.query.filter_by(username=current_user.username).first()
         post = Post.query.filter_by(id=post_id).first()

@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
-from flask_cors import CORS
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -19,7 +18,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config['SECRET_KEY'] = 'SECRET_KEY'
 #for hashing password and protect
 bcrypt = Bcrypt(app)
-CORS(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)
 socketio = SocketIO(app)

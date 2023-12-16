@@ -8,7 +8,7 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-class AdlibPost(db.Model,UserMixin):
+class Adlib_Post(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(200),nullable=False)
     authors = db.Column(db.String(30),nullable=False)
@@ -57,8 +57,12 @@ class Profile_Pic_Upload(db.Model):
     data = db.Column(db.LargeBinary)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
 
+user_adlib_post = db.Table('user_adlib_post',
+    db.Column('id', db.Integer, primary_key=True),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('adlib_post_id', db.Integer, db.ForeignKey(Adlib_Post.id)))
 user_post = db.Table('user_post',
-    # db.Column( db.Integer, primary_key=True),
+    db.Column('id', db.Integer, primary_key=True),
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('post_id', db.Integer, db.ForeignKey('post.id')))
 
@@ -66,7 +70,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120),unique=True,nullable=False)
     id = db.Column(db.Integer, primary_key=True)
     likes = db.relationship('Post', secondary=user_post, backref='liker')
-    # likesAdlib = db.relationship('Post', secondary=user_post, backref='adlibLiker')
+    likesAdlib = db.relationship('Adlib_Post', secondary=user_adlib_post, backref='adlibLiker')
     member = db.relationship('Game_Room_Members',backref='member',lazy=True)
     messages = db.relationship('Game_Room_Messages',backref='author',lazy=True)
     password = db.Column(db.String(60), nullable = False)

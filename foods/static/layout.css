@@ -28,7 +28,7 @@ body{background-color: var(--bg);color:rgb(0, 0, 0); font-family: 'Nunito Sans',
 .formTitle{font-size: 66px;text-align: center;}
 .hr{border-bottom: 1px solid rgb(99, 99, 99);height:1px;margin:30px 0px; width:45vw;}
 .info{color: rgb(255, 161, 54);}
-.likeButton{height:30px;padding:0px 10px 0px 0px;}
+.likeButton,.adlibLikeButton{height:30px;padding:0px 10px 0px 0px;}
 .likeButton:hover{filter: brightness(2);}
 .likeContainer{align-items: center; display: flex; padding:10px 0px 10px 10px;}
 .links{align-items: center; display: flex; justify-content: space-between}

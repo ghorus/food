@@ -13,6 +13,10 @@
             {% endfor %}
         {% endfor %}
     </p>
+    <div class="likeContainer">
+        <input class="adlibLikeButton" id={{post.id}} src="{{url_for('static', filename = 'post_pics/heart.png')}}"  type="image"/>
+        <span class="adlibTotalLikes">{{post.adlibLiker|length}} Likes</span>
+    </div>   
     <hr>
 {% endfor %}
 {% endblock content %}

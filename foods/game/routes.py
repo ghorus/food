@@ -2,7 +2,7 @@ from flask import Blueprint,render_template,redirect,request,url_for
 from flask_login import login_required,current_user
 from flask_socketio import emit,join_room
 from foods import socketio,app,db
-from foods.models import AdlibPost,Game_Room,Game_Room_Members,Game_Room_Messages,User
+from foods.models import Adlib_Post,Game_Room,Game_Room_Members,Game_Room_Messages,User
 from foods.users.forms import CreateGameRoomForm,GameRoomMessageForm,JoinRoomForm
 import random 
 import string
@@ -12,10 +12,29 @@ game = Blueprint('game',__name__)
 def room_id_generator(size=4, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
+@socketio.on('adlib like',namespace='/adliblikes')
+def like(post_id):
+    if current_user.is_authenticated:
+        user = User.query.filter_by(username=current_user.username).first()
+        post = Adlib_Post.query.filter_by(id=post_id).first()
+        if post in user.likesAdlib:
+            user.likesAdlib.remove(post)
+            db.session.commit()
+            emit('adlib like',len(post.adlibLiker))
+
+        elif post not in user.likesAdlib:
+            user.likesAdlib.append(post)
+            db.session.add(user)
+            db.session.commit()
+            emit('adlib like',len(post.adlibLiker))
+
+    elif current_user.is_authenticated == False:
+        emit('redirect', url_for('users.login'))
+
 #all adlib posts
 @game.route("/adlibposts",methods=['GET','POST'])
 def adlibposts():
-    adlib_posts = AdlibPost.query.all()
+    adlib_posts = Adlib_Post.query.all()
     auths = User.query.all()
     return render_template("game/adlibposts.html",adlib_posts=adlib_posts,auths=auths)
 
@@ -63,7 +82,7 @@ def joingameroom():
 
 @socketio.on("post adlib",namespace='/posting')
 def postAdlib(data):
-    adlib = AdlibPost(authors=data['members'],content=data['adlibs'],title=data['roomTitle'])
+    adlib = Adlib_Post(authors=data['members'],content=data['adlibs'],title=data['roomTitle'])
     db.session.add(adlib)
     db.session.commit()
     #delete all info from that room:room,members,&messages

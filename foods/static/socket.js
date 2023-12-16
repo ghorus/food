@@ -1,6 +1,6 @@
 //socket home likes
 var socket = io();
-var likes = io('https://food-v6q5.onrender.com/likes')
+var likes = io('http://127.0.0.1:5000/likes')
 const likeButton = document.getElementsByClassName("likeButton")
 const totalLikes = document.getElementsByClassName("totalLikes")
 Array.from(likeButton).forEach(like => {
@@ -15,6 +15,24 @@ Array.from(likeButton).forEach(like => {
 likes.on('redirect', (dest) => {
     window.location.href = dest;
 });
+
+//adlib likes
+var adliblikes = io('http://127.0.0.1:5000/adliblikes')
+const adlibLikeButton = document.getElementsByClassName("adlibLikeButton")
+const adlibTotalLikes = document.getElementsByClassName("adlibTotalLikes")
+Array.from(adlibLikeButton).forEach(like => {
+        $(like).unbind('click').click(function(){
+        adliblikes.emit('adlib like',like.id)
+        adliblikes.on('adlib like',(data)=>{
+            like.nextElementSibling.innerHTML = data + " Likes"
+            like.style.animation = "newLike 0.3s"
+        })
+})
+})
+likes.on('redirect', (dest) => {
+    window.location.href = dest;
+});
+
 //total users
 socket.on('total users',data=>{
     const displayTotalUsers = document.querySelector(".totalUsers")
@@ -25,7 +43,7 @@ socket.on('total users',data=>{
     },10);
 })
 // game messaging
-var messaging = io('https://food-v6q5.onrender.com/messaging')
+var messaging = io('http://127.0.0.1:5000/messaging')
 const flash_message = document.querySelector(".flashMessage")
 const gameMessage = document.querySelector(".gameMessage")
 const messagesContainer = document.querySelector(".messagesContainer")
@@ -46,9 +64,9 @@ messaging.on('connect',()=>{if(roomLink != null){
     messaging.emit('join',data);
 }})
 
-messaging.on('disconnect',()=>{
+function leaving (){
     messaging.emit('dc',roomLink.innerHTML)
-})
+}
 
 messaging.on('flashy',(data)=>{
     flash_message.innerHTML = data
@@ -73,9 +91,8 @@ messaging.on('send game message',(words)=>{
     }
 })
 
-
 //postAdlib
-var posting = io('https://food-v6q5.onrender.com/posting')
+var posting = io('http://127.0.0.1:5000/posting')
 function postAdlib(){
     const allAdlibs = messagesContainer.innerHTML
     const allMembers = document.querySelectorAll(".memberIds")

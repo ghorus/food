@@ -7,18 +7,22 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
-<h1>Join Room</h1>
-<hr>
-<h1>{{gamerooms | length}} active room{%if gamerooms | length > 1 %}s{% endif %}</h1>
-{% for gameroom in gamerooms %}
-    <br>
-    {{gameroom.room_link}} {{gameroom.name}} 
-    <form action="" method="POST" novalidate>
-        {{joinForm.hidden_tag()}}
-        <span style="display:none;">{{joinForm.member(value=current_user.id)}}</span>
-        <span style="display:none;">{{joinForm.room(value=gameroom.room_link)}}</span>
-        {{joinForm.submitJoin}}
-    </form>
-{% endfor %}
-<hr>
+<h1 class="roomTitle">Join an Adlib Room</h1>
+<h1 class="roomSubtitle">{{gamerooms | length}} active room{%if gamerooms | length > 1 %}s{% endif %}</h1>
+<section class="rooms">
+    {% for gameroom in gamerooms %}
+        <div class="roomInfo">
+            <div class="roomTexts">
+                <span class="roomName">{{gameroom.name}} </span>
+                <span class="roomLink">{{gameroom.room_link}} </span>
+            </div>
+            <form action="" method="POST" novalidate style="justify-content:center;display:flex;flex-direction:column;">
+                {{joinForm.hidden_tag()}}
+                <span style="display:none;">{{joinForm.room(value=gameroom.room_link)}}</span>
+                <span style="display:none;">{{joinForm.member(value=current_user.id)}}</span>
+                {{joinForm.submitJoin(class_="roomButton")}}
+            </form>
+        </div>
+    {% endfor %}
+</section>
 {% endblock content %}

@@ -1,22 +1,22 @@
 {% extends 'layout.html' %}
 {% block content %}
-<h1>Completed Adlibs to Read :&rpar;</h1>
 {% for post in adlib_posts %}
-    <h1>{{post.title}}</h1>
-    <p>{{post.content}}</p>
-    <p>by 
-        {% for author in post.authors %}
-            {% for a in auths %}
-                {% if a.id == author|int %}
-                    {{a.username}}
-                {% endif %}
+    <section class="adlibPost">
+        <h1 class="adlibPostTitle">{{post.title}}</h1>
+        <p class="adlibPostAuthors">by 
+            {% for author in post.authors %}
+                {% for a in auths %}
+                    {% if a.id == author|int %}
+                        {{a.username}}
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-    </p>
-    <div class="likeContainer">
-        <input class="adlibLikeButton" id={{post.id}} src="{{url_for('static', filename = 'post_pics/heart.png')}}"  type="image"/>
-        <span class="adlibTotalLikes">{{post.adlibLiker|length}} Likes</span>
-    </div>   
-    <hr>
+        </p>
+        <p>{{post.content}}</p>
+        <div class="likeContainer">
+            <input class="adlibLikeButton" id={{post.id}} src="{{url_for('static', filename = 'post_pics/heart.png')}}"  type="image"/>
+            <span class="adlibTotalLikes">{{post.adlibLiker|length}} Likes</span>
+        </div>   
+    </section>
 {% endfor %}
 {% endblock content %}

@@ -37,11 +37,20 @@ def like(post_id):
 def search():
     return render_template('search/search.html')
 
+@main.route("/search_name")
+def search_name():
+    q = request.args.get('q_names')
+    if q:
+        results = Post.query.filter(Post.name.icontains(q)).all()
+    else:
+        results=[]
+    return render_template('search/search_name.html',results=results)
+
 @main.route("/search_result")
 def search_result():
     q = request.args.get('q')
     if q:
-        results = Post.query.filter(Post.name.icontains(q)).all()
+        results = Post.query.filter(Post.name.icontains(q) | Post.address.icontains(q)| Post.category.icontains(q) | Post.title.icontains(q)).all()
     else:
         results=[]
     return render_template('search/search_result.html',results=results)

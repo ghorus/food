@@ -7,6 +7,7 @@
         <span class="hr"></span>
         {{form.name.label(class_="formSubtitle")}}
         {{form.name(class_="formInput")}}
+        <div class="formResults" id="name_results"></div>
         {% if form.name.errors %}
             {% for error in form.name.errors %}
             <p class="danger">{{error}}</p>

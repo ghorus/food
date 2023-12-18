@@ -1,43 +1,47 @@
 {% extends 'layout.html' %}
 {% block content %}
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <p class={{category}}>{{message}}</p>
+<section class="roomContainer">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class={{category}}>{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div>
+        <!--room info-->
+        <span class="roomLink" style="display:none;">{{link}}</span>
+        <div class="memberContainer">
+            {% for member in members %}
+                <span class="member">{{member.member.username}}</span>
+            {% endfor %}
+        </div>
+        <!--hidden info for deleting this entire room once members decide to post-->
+        {% for member in range(members|length) %}
+            <span class="memberIds" style="display:none;">{{members[member].member_id}}</span>
         {% endfor %}
-    {% endif %}
-{% endwith %}
-<p class="flashMessage danger"> </p>
-<div>
-    <!--room info-->
-    <span class="roomLink">{{link}}</span>
-    <div class="memberContainer">
-        {% for member in members %}
-            {{member.member.username}}
+        <h1 class="roomTitle">{{room_info.name}}</h1>
+    </div>
+    <!--all current adlibs-->
+    <div class="messagesContainer">
+        {% for message in messages %}
+            {% if message.room_id == link %}{{message.member_message}} {% endif %}
         {% endfor %}
     </div>
-    <!--hidden info for deleting this entire room once members decide to post-->
-    {% for member in range(members|length) %}
-        <span class="memberIds">{{members[member].member_id}}</span>
-    {% endfor %}
-    <h1 class="roomTitle">{{room_info.name}}</h1>
-</div>
-<!--all current adlibs-->
-<div class="messagesContainer">
-    {% for message in messages %}
-        {% if message.room_id == link %}{{message.member_message}} {% endif %}
-    {% endfor %}
-</div>
-    {{messageForm.message.label}}
-    {{messageForm.message(class_="gameMessage")}}
-    {% if messageForm.message.errors %}
-        {% for error in messageForm.message.errors %}
-        <p class="danger">{{error}}</p>
-        {% endfor %}
-    {% endif %}
-    {{messageForm.submit(class_="gameMessageSubmit")}}
-<hr>
-<!--finish and post adlib -->
-<button onclick="postAdlib()">Post Adlib</button>
-<button onclick="leaving()">leave room</button>
+    <p class="turnMessage success"></p>
+    <div>
+        {{messageForm.message(class_="gameMessage")}}
+        {% if messageForm.message.errors %}
+            {% for error in messageForm.message.errors %}
+            <p class="danger">{{error}}</p>
+            {% endfor %}
+        {% endif %}
+        {{messageForm.submit(class_="gameMessageSubmit")}}
+    </div>
+    <p class="flashMessage danger"></p>
+    <hr>
+    <!--finish and post adlib -->
+    <button class="postAdlibButton" onclick="postAdlib()">Post Adlib</button>
+    <button class="leaveRoomButton" onclick="leaving()">leave room</button>
+</section>
 {% endblock content %}

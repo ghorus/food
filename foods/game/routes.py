@@ -137,6 +137,7 @@ def sendGameMessage(data):
                 elif room.turn + 1 <= (len(ms)-1):
                     room.turn += 1
                     db.session.commit()
+                emit('turn',current_member_turn.username + "'s turn",room=data['link'],broadcast=True)
     else:
         emit('redirect', url_for('game.joingameroom'))
     messages = Game_Room_Messages.query.all()
@@ -154,15 +155,23 @@ def join(data):
     for member in members:
         user = User.query.filter_by(id=member.member_id).first()
         members_usernames.append(user.username)
-    emit('members',members_usernames,room=data['roomLink'])
+    emit('members',members_usernames,room=data['roomLink'],broadcast=True)
 
 @socketio.on('dc',namespace='/messaging')
 def on_leave(data):
-    room_members = Game_Room_Members.query.filter_by(room_id=data).all()
-    emit('flashy','someone left',broadcast=True)
+    room_members = Game_Room_Members.query.filter_by(room_id=data['roomLink']).all()
     for member in room_members:
         if member.member_id == current_user.id:
             db.session.delete(member)
             db.session.commit()
+    #update the members
+    members = Game_Room_Members.query.filter_by(room_id=data['roomLink']).all()
+    members_usernames = []
+    for member in members:
+        user = User.query.filter_by(id=member.member_id).first()
+        members_usernames.append(user.username)
+    emit('members',members_usernames,room=data['roomLink'],broadcast=True)
+    emit('redirect', url_for('game.joingameroom'))
+
 
 

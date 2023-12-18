@@ -1,4 +1,59 @@
-{% for result in results %}
+<section class="allResults">
+    {% for result in results %}
+    <a href="{{url_for('users.post',post_id=result.id)}}">
+        <div class="result">
+            {% if result.uploads %}
+                {% for uploads in result.uploads %}
+                    <img class="searchPic" src="{{ url_for('main.uploadFood', id=uploads.id) }}" alt="">
+                {% endfor %}
+            {% endif %}
+            <section>
+                <div class="resultInfo">
+                    <span style="font-size:20px;font-weight:bold;">{{result.name}}</span>
+                </div>
+                <hr>
+                <div class="resultInfo">
+                    <img class="resultInfoPic" src="{{url_for('static', filename = 'post_pics/restaurant.png')}}">
+                    <span>{{result.title}}</span>
+                </div>
+                <hr>
+                <div class="resultInfo">
+                    <img class="resultInfoPic" src="{{url_for('static', filename = 'post_pics/review.png')}}">
+                    <span>{{result.rating}}</span>
+                </div>
+                <hr>
+                {% if result.address %}
+                <div class="resultInfo">
+                    <img class="resultInfoPic" src="{{url_for('static', filename = 'post_pics/addy.png')}}">
+                    <span>{{result.address}}</span>
+                </div>
+                <hr>
+                {% endif %}
+                {% if result.category %}<div class="resultInfo">
+                    <span style="border:1px solid gray;border-radius:15px;padding:1px 10px;">{{result.category}}</span>
+                </div>
+                <hr>
+                {% endif %}
+                {% if result.price %}
+                <div class="resultInfo">
+                    <img class="resultInfoPic" src="{{url_for('static', filename = 'post_pics/dollar.png')}}">
+                    <span>{{result.price}}</span>
+                </div>
+                <hr>
+                {% endif %}
+                {% if result.content %}
+                <div class="resultInfo">
+                    <img class="resultInfoPic" src="{{url_for('static', filename = 'post_pics/favourite.png')}}">
+                    <span>{{result.content}}</span>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+        {% endfor %}
+    </a>
+</section>
+    
+<!-- {% for result in results %}
 <div class="postContainer">
     <section class="post">
         <div class="postUserPicPaddingContainer">
@@ -42,4 +97,4 @@
         </div>
     </section>
 </div>
-{% endfor %}
+{% endfor %} -->

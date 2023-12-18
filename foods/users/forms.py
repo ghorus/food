@@ -10,7 +10,7 @@ class CreateGameRoomForm(FlaskForm):
     submit = SubmitField('Create Game')
 
 class GameRoomMessageForm(FlaskForm):
-    message = StringField('Add your Adlib',validators=[DataRequired()])
+    message = StringField('Your Adlib',validators=[DataRequired()])
     submit = SubmitField('+')
 
 class JoinRoomForm(FlaskForm):

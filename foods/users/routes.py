@@ -77,6 +77,11 @@ def logout():
 @users.route("/post/new",methods=['GET', 'POST'])
 @login_required
 def new_post():
+    q = request.args.get('q')
+    if q:
+        results = Post.query.filter(Post.name.icontains(q)).all()
+    else:
+        results=[]
     form = PostForm()
     if form.validate_on_submit():
         post = Post( author=current_user,address=form.address.data,
@@ -91,7 +96,7 @@ def new_post():
             db.session.add(upload)
             db.session.commit()
         return redirect(url_for('main.home'))
-    return render_template('users/create_post.html',title='New Post',form=form)
+    return render_template('users/create_post.html',title='New Post',form=form,results=results)
 
 @users.route('/post/<post_id>')
 def post(post_id):

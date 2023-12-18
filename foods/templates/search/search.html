@@ -1,7 +1,11 @@
 {% extends 'layout.html' %}
 {% block content %}
-<h1>What are you Looking For?</h1>
-<label>Search by store name, food name, address</label>
-<input name="q" hx-get="/search_result" hx-trigger="keyup changed delay:500ms" hx-target="#results">
+<div class="searchOutsideContainer">
+    <section class="searchContainer">
+        <h1 class="searchTitle">What are you Looking For?</h1>
+        <label class="searchSubtitle">Search by store name, food name, address, etc.</label>
+        <input class="searchBar" name="q" hx-get="/search_result" hx-trigger="keyup changed delay:500ms" hx-target="#results">
+    </section>
+</div>
 <div id="results"></div>
 {% endblock content %}

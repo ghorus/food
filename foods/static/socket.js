@@ -53,6 +53,13 @@ submit.addEventListener('click',()=>{
     messaging.emit('send game message',({message:gameMessage.value,link:roomLink.innerHTML}))
     gameMessage.value=""
 })
+//game message press enter
+gameMessage.addEventListener("keypress",(e)=>{
+    if(e.key=='Enter'){
+        messaging.emit('send game message',({message:gameMessage.value,link:roomLink.innerHTML}))
+        gameMessage.value=""
+    }
+})
 //join room
 messaging.on('connect',()=>{if(roomLink != null){
     const allMembers = document.querySelectorAll(".memberIds")
@@ -63,10 +70,25 @@ messaging.on('connect',()=>{if(roomLink != null){
     var data = {roomLink:roomLink.innerHTML}
     messaging.emit('join',data);
 }})
-
+//leaving game room
 function leaving (){
-    messaging.emit('dc',roomLink.innerHTML)
+    var data = {roomLink:roomLink.innerHTML}
+    messaging.emit('dc',data)
 }
+messaging.on('redirect', (dest) => {
+    window.location.href = dest;
+});
+
+const turn_message = document.querySelector(".turnMessage")
+//game member's turn 
+messaging.on('turn',(data)=>{
+    turn_message.innerHTML = data
+    turn_message.classList.remove('totalUsersAnimation');
+    setTimeout(function(){
+        turn_message.classList.add('totalUsersAnimation');
+    },10);
+})
+
 
 messaging.on('flashy',(data)=>{
     flash_message.innerHTML = data
@@ -80,7 +102,10 @@ messaging.on('members',(data)=>{
     const memberContainer = document.querySelector(".memberContainer")
     memberContainer.innerHTML=""
     for(i=0;i<data.length;i++){
-        memberContainer.innerHTML+=data[i] + " "
+        const memb = document.createElement("span")
+        memb.classList.add("member")
+        memb.innerHTML+=data[i]
+        memberContainer.appendChild(memb)
     }
 })
 
@@ -96,12 +121,11 @@ var posting = io('https://food-v6q5.onrender.com/posting')
 function postAdlib(){
     const allAdlibs = messagesContainer.innerHTML
     const allMembers = document.querySelectorAll(".memberIds")
-    const roomTitle = document.querySelector(".roomTitle").innerHTML
+    var roomTitle = document.querySelector(".roomTitle").innerHTML
     var totalMembers = ""
     for(i=0;i<allMembers.length;i++){
         totalMembers += allMembers[i].innerHTML
     }
-    console.log(totalMembers)
     var data={adlibs:allAdlibs,
         members:totalMembers,
         roomTitle:roomTitle,

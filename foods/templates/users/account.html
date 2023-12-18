@@ -16,9 +16,9 @@
     </section>
     <!--enctype is to pass image file properly-->
     <section class="formContainer">
+        <h1 class="formTitle">Update your Account?</h1>
         <form class="formInsideContainer" method="POST" action="" enctype="multipart/form-data" novalidate>
             {{form.hidden_tag()}}
-            <h1 class="formTitle">Update your Account?</h1>
             <span class="hr"></span>
             {{form.username.label(class_="formSubtitle")}}
             {{form.username(class_="formInput")}}

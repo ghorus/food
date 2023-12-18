@@ -14,6 +14,15 @@ Array.from(rs).forEach(rating => {
     }
 })
 
+//create room press enter
+const createForm = document.querySelector(".createContainer")
+const nameInput = document.querySelector(".nameInput")
+nameInput.addEventListener("keypress",(e)=>{
+    if(e.key=='Enter'){
+        createForm.submit()
+    }
+})
+
 //updateDelete
 const updateDelete = document.getElementsByClassName("updateDeleteContainer")
 Array.from(updateDelete).forEach(menu => {

@@ -2,7 +2,7 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from foods.models import User
-from wtforms import BooleanField,IntegerField,PasswordField,StringField,SubmitField,TextAreaField
+from wtforms import BooleanField,FloatField,IntegerField,PasswordField,StringField,SubmitField,TextAreaField
 from wtforms.validators import DataRequired, Length,NumberRange, EqualTo, Email, ValidationError
 
 class CreateGameRoomForm(FlaskForm):
@@ -24,13 +24,15 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class PostForm(FlaskForm):
-    city = StringField('Restaurant City Location', validators=[DataRequired()],render_kw={"placeholder": "Input city of restaurant here*"})
-    content = TextAreaField('Content', validators=[DataRequired()],render_kw={"placeholder": "Contents of post here*"})
+    address = StringField('Store Address',render_kw={"placeholder": "Input address of store here*"})
+    category = StringField('Food Category',render_kw={"placeholder": "Input food category here*"})
+    content = TextAreaField('Your Thoughts?',render_kw={"placeholder": "Your review here*"})
     likes = BooleanField('Like')
-    name = StringField('Restaurant Name', validators=[DataRequired()],render_kw={"placeholder": "Name of restaurant here*"})
+    name = StringField('Store Name*', validators=[DataRequired()],render_kw={"placeholder": "Name of store here*"})
     picture = FileField('Picture of Food',validators=[FileAllowed(['jpg','png','jpeg','gif'])])
-    rating = IntegerField('Rate out of 5',validators=[DataRequired(),NumberRange(max=5)])
-    title = StringField('Food Item Name and/or Number', validators=[DataRequired()],render_kw={"placeholder": "Title of your post*"})
+    price = FloatField('Price of Food')
+    rating = IntegerField('Rate out of 5*',validators=[DataRequired(),NumberRange(max=5)])
+    title = StringField('Food Item Name and/or Number*', validators=[DataRequired()],render_kw={"placeholder": "Title of your post*"})
     submit = SubmitField('Post')
 
 class RegistrationForm(FlaskForm):

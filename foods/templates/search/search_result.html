@@ -1,0 +1,45 @@
+{% for result in results %}
+<div class="postContainer">
+    <section class="post">
+        <div class="postUserPicPaddingContainer">
+            <div class="postUserPicContainer">
+                {% if result.author.uploads %}
+                    {% for uploads in result.author.uploads %}
+                        <img class="postUserPic" src="{{ url_for('main.upload', id=uploads.id) }}" alt="">
+                    {% endfor %}
+                {% else %}
+                        <img class="postUserPic" alt="">
+                {% endif %}
+                <div class="postUserTime">
+                    <span>Posted by <a class="postUsername" href="{{url_for('users.user_posts', username=result.author.username)}}">{{result.author.username}}</a></span>
+                    <span class="postTime">{{result.datePosted.strftime('%m-%d-%Y @ %H:%M')}}</span>
+                    {% if result.name %}
+                        <span class="postTime">{{result.name}}</span>
+                    {% endif %}
+                    {% if result.address %}
+                        <span class="postTime">{{result.address}}</span>
+                    {% endif %}
+                    {% if result.category %}
+                        <span class="postTime">{{result.category}}</span>
+                    {% endif %}
+                    {% if result.price %}
+                        <span class="postTime">${{result.price}}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="postContents">
+                <h1 class="ratingStars">"{{result.rating}} out of 5"</h1>
+                <a href="{{url_for('users.post',post_id=result.id)}}"><h3 class="postTitle" style="display:inline">{{result.title}}</h3></a>
+                <p class="postContent">{{result.content}}</p>
+            </div>
+        </div> 
+        <div class="postFoodPicContainer">
+            {% if result.uploads %}
+                {% for uploads in result.uploads %}
+                    <img class="postFoodPic" src="{{ url_for('main.uploadFood', id=uploads.id) }}" alt="">
+                {% endfor %}
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endfor %}

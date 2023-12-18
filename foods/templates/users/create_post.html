@@ -13,11 +13,27 @@
             {% endfor %}
         {% endif %}
         <span class="hr"></span>
-        {{form.city.label(class_="formSubtitle")}}
-        {{form.city(class_="formInput")}}
-        {% if form.city.errors %}
-            {% for error in form.city.errors %}
+        {{form.address.label(class_="formSubtitle")}}
+        {{form.address(class_="formInput")}}
+        {% if form.address.errors %}
+            {% for error in form.address.errors %}
             <p class="danger">{{error}}</p>
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.category.label(class_="formSubtitle")}}
+        {{form.category(class_="formInput")}}
+        {% if form.category.errors %}
+            {% for error in form.category.errors %}
+            <p class="danger">{{error}}</p>
+            {% endfor %}
+        {% endif %}
+        <span class="hr"></span>
+        {{form.price.label(class_="formSubtitle")}}
+        {{form.price(class_="formInput")}}
+        {% if form.price.errors %}
+            {% for error in form.price.errors %}
+                {{error}}
             {% endfor %}
         {% endif %}
         <span class="hr"></span>

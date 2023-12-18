@@ -1,0 +1,7 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>What are you Looking For?</h1>
+<label>Search by store name, food name, address</label>
+<input name="q" hx-get="/search_result" hx-trigger="keyup changed delay:500ms" hx-target="#results">
+<div id="results"></div>
+{% endblock content %}

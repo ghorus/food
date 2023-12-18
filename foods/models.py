@@ -38,12 +38,14 @@ class Game_Room_Messages(db.Model,UserMixin):
     room_id = db.Column(db.String(4),nullable=False)
 
 class Post(db.Model, UserMixin):
-    content = db.Column(db.String(2000),nullable=False)
-    city = db.Column(db.String(200),nullable=False)
+    category = db.Column(db.String(200),nullable=True)
+    content = db.Column(db.String(2000),nullable=True)
+    address = db.Column(db.String(200),nullable=True)
     datePosted = db.Column(db.DateTime,default=datetime.now(),nullable=False)
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200),nullable=False)
     uploads = db.relationship('Food_Post_Upload',backref='belongs_to_post',lazy=True)
+    price = db.Column(db.Numeric(scale=2),nullable=True)
     rating = db.Column(db.Integer,nullable=False)
     title = db.Column(db.String(200),nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)

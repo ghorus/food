@@ -33,6 +33,19 @@ def like(post_id):
     elif current_user.is_authenticated == False:
         emit('redirect', url_for('users.login'))
 
+@main.route("/search")
+def search():
+    return render_template('search/search.html')
+
+@main.route("/search_result")
+def search_result():
+    q = request.args.get('q')
+    if q:
+        results = Post.query.filter(Post.name.icontains(q)).all()
+    else:
+        results=[]
+    return render_template('search/search_result.html',results=results)
+
 @main.route("/upload_pic/<id>")
 def upload(id):
     upload = Profile_Pic_Upload.query.filter_by(id=id).first()

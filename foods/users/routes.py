@@ -79,8 +79,9 @@ def logout():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post( author=current_user,city=form.city.data,content=form.content.data,
-                    name=form.name.data,rating=form.rating.data, title=form.title.data)
+        post = Post( author=current_user,address=form.address.data,
+                    category=form.category.data, content=form.content.data,
+                    name=form.name.data, price=form.price.data, rating=form.rating.data, title=form.title.data)
         db.session.add(post)
         db.session.commit()
         if form.picture.data:
@@ -160,9 +161,11 @@ def update_post(post_id):
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
-        post.city = form.city.data
+        post.address = form.address.data
+        post.category = form.category.data
         post.content = form.content.data
         post.name = form.name.data
+        post.price = form.price.data
         post.rating = form.rating.data
         post.title = form.title.data
         db.session.commit()
@@ -181,9 +184,11 @@ def update_post(post_id):
         flash('Your post has been updated!','success')
         return redirect(url_for('users.post',post_id=post.id))
     elif request.method == 'GET':
-        form.city.data = post.city
+        form.address.data = post.address
+        form.category.data = post.category
         form.content.data = post.content
         form.name.data = post.name
+        form.price.data = post.price
         form.rating.data = post.rating
         form.title.data = post.title
         if post.uploads:

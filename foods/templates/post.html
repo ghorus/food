@@ -14,8 +14,18 @@
                 <div class="postUserTime">
                     <span>Posted by <a class="postUsername" href="{{url_for('users.user_posts', username=post.author.username)}}">{{post.author.username}}</a></span>
                     <span class="postTime">{{post.datePosted.strftime('%m-%d-%Y @ %H:%M')}}</span>
-                    <span class="postTime">{{post.name}}</span>
-                    <span class="postTime">{{post.city}}</span>
+                    {% if post.name %}
+                        <span class="postTime">{{post.name}}</span>
+                    {% endif %}
+                    {% if post.address %}
+                        <span class="postTime">{{post.address}}</span>
+                    {% endif %}
+                    {% if post.category %}
+                        <span class="postTime">{{post.category}}</span>
+                    {% endif %}
+                    {% if post.price %}
+                        <span class="postTime">${{post.price}}</span>
+                    {% endif %}
                 </div>
             </div>
             <div class="postContents">

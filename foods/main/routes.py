@@ -3,6 +3,7 @@ import json
 from urllib.request import urlopen
 from geopy.geocoders import Nominatim
 from geopy import distance
+import geocoder
 #flask
 from flask import Blueprint,flash,redirect,render_template,request,send_file,url_for
 from flask_login import current_user
@@ -15,12 +16,9 @@ main = Blueprint('main',__name__)
 @main.route("/get_loc")
 def get_loc(locs):
     geolocator = Nominatim(user_agent="foodLocator")
-    url="https://ipinfo.io/json"
-    response = urlopen(url)
-    data=json.load(response)
     #current loc of user
-    curr_loc = data['loc'].split(",")
-    curr_place = (curr_loc[0],curr_loc[1])
+    data = (geocoder.ip('me')).latlng
+    curr_place = (data[0],data[1])
     #location of food spots
     location = []
     distances = []

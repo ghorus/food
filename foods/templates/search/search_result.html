@@ -1,50 +1,53 @@
 <section class="allResults">
-    {% for result in results %}
+    {% for result in range(results|length) %}
     <a href="{{url_for('users.post',post_id=result.id)}}">
         <div class="result">
-            {% if result.uploads %}
-                {% for uploads in result.uploads %}
+            {% if distances[result] %}
+                <p>{{distances[result]}} mi away</p>
+            {% endif %}
+            {% if results[result].uploads %}
+                {% for uploads in results[result].uploads %}
                     <img class="searchPic" src="{{ url_for('main.uploadFood', id=uploads.id) }}" alt="">
                 {% endfor %}
             {% endif %}
             <section>
                 <div class="resultInfo">
-                    <span style="font-size:20px;font-weight:bold;">{{result.name}}</span>
+                    <span style="font-size:20px;font-weight:bold;">{{ results[result].name}}</span>
                 </div>
                 <hr>
                 <div class="resultInfo">
                     <img class="resultInfoPic" src="{{url_for('static', filename = 'post_pics/restaurant.png')}}">
-                    <span>{{result.title}}</span>
+                    <span>{{ results[result].title}}</span>
                 </div>
                 <hr>
                 <div class="resultInfo">
                     <img class="resultInfoPic" src="{{url_for('static', filename = 'post_pics/review.png')}}">
-                    <span>{{result.rating}}</span>
+                    <span>{{ results[result].rating}}</span>
                 </div>
                 <hr>
-                {% if result.address %}
+                {% if  results[result].address %}
                 <div class="resultInfo">
                     <img class="resultInfoPic" src="{{url_for('static', filename = 'post_pics/addy.png')}}">
-                    <span>{{result.address}}</span>
+                    <span>{{ results[result].address}}</span>
                 </div>
                 <hr>
                 {% endif %}
-                {% if result.category %}<div class="resultInfo">
-                    <span style="border:1px solid gray;border-radius:15px;padding:1px 10px;">{{result.category}}</span>
+                {% if  results[result].category %}<div class="resultInfo">
+                    <span style="border:1px solid gray;border-radius:15px;padding:1px 10px;">{{ results[result].category}}</span>
                 </div>
                 <hr>
                 {% endif %}
-                {% if result.price %}
+                {% if results[result].price %}
                 <div class="resultInfo">
                     <img class="resultInfoPic" src="{{url_for('static', filename = 'post_pics/dollar.png')}}">
-                    <span>{{result.price}}</span>
+                    <span>{{ results[result].price}}</span>
                 </div>
                 <hr>
                 {% endif %}
-                {% if result.content %}
+                {% if  results[result].content %}
                 <div class="resultInfo">
                     <img class="resultInfoPic" src="{{url_for('static', filename = 'post_pics/favourite.png')}}">
-                    <span>{{result.content}}</span>
+                    <span>{{ results[result].content}}</span>
                 </div>
                 {% endif %}
             </section>

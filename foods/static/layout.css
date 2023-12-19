@@ -85,7 +85,7 @@ nav{border-bottom: 1px solid rgb(231, 231, 231);margin:0px 0px 30px 0px; padding
 .profilePic{border-radius: 50%; height:200px;width:200px;margin:0px 20px 0px 0px;object-fit: cover;}
 .profileText{font-size: 29px; margin:0;}
 .profileText:last-child{font-size: 17px;font-weight: lighter;}
-.result{align-items: center; border:1px solid rgb(212, 212, 212);border-radius: 10px;box-shadow: 0px 0px 5px gray; display: flex;flex-direction: column;justify-content: center;margin:10px; padding:5px; width:250px;}
+.result{align-items: center; border:1px solid rgb(212, 212, 212);border-radius: 10px;box-shadow: 0px 0px 5px gray; display: flex;flex-direction: column;justify-content: center;margin:10px; padding:5px; width:320px;}
 .resultInfo{margin:5px 0px;display: flex;align-items: center;}
 .resultInfoPic{height:30px;margin:0px 10px 0px 0px;}
 .resultName{border: 1px solid gray;}

@@ -1,11 +1,42 @@
+#location features
+import json
+from urllib.request import urlopen
+from geopy.geocoders import Nominatim
+from geopy import distance
+#flask
 from flask import Blueprint,flash,redirect,render_template,request,send_file,url_for
 from flask_login import current_user
 from flask_socketio import emit, send
 from foods import db,socketio,app
 from foods.models import Food_Post_Upload,Post,Profile_Pic_Upload,User
 from io import BytesIO
-
 main = Blueprint('main',__name__)
+
+@main.route("/get_loc")
+def get_loc(locs):
+    geolocator = Nominatim(user_agent="foodLocator")
+    url="https://ipinfo.io/json"
+    response = urlopen(url)
+    data=json.load(response)
+    #current loc of user
+    curr_loc = data['loc'].split(",")
+    curr_place = (curr_loc[0],curr_loc[1])
+    #location of food spots
+    location = []
+    distances = []
+    for loc in locs:
+        location.append(loc.address)
+    for loc in location:
+        coord = geolocator.geocode(loc,timeout=5)
+        if coord:
+            lat,lon = (coord.latitude),(coord.longitude)
+            place = (lat,lon)
+            dist = round(distance.distance(curr_place,place).mi,1)
+            distances.append(dist)
+        else:
+            distances.append(None)
+            app.logger.warning('no')
+    return distances
 
 @main.route("/")
 def home():
@@ -37,23 +68,15 @@ def like(post_id):
 def search():
     return render_template('search/search.html')
 
-@main.route("/search_name")
-def search_name():
-    q = request.args.get('q_names')
-    if q:
-        results = Post.query.filter(Post.name.icontains(q)).all()
-    else:
-        results=[]
-    return render_template('search/search_name.html',results=results)
-
 @main.route("/search_result")
 def search_result():
     q = request.args.get('q')
     if q:
         results = Post.query.filter(Post.name.icontains(q) | Post.address.icontains(q)| Post.category.icontains(q) | Post.title.icontains(q)).all()
+        distances = get_loc(results)
     else:
         results=[]
-    return render_template('search/search_result.html',results=results)
+    return render_template('search/search_result.html',results=results,distances = distances)
 
 @main.route("/upload_pic/<id>")
 def upload(id):

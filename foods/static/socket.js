@@ -29,7 +29,7 @@ Array.from(adlibLikeButton).forEach(like => {
         })
 })
 })
-likes.on('redirect', (dest) => {
+adliblikes.on('redirect', (dest) => {
     window.location.href = dest;
 });
 

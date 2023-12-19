@@ -26,13 +26,18 @@
                     {% endif %}
                 </span>
                 <span class="nonLogoLinks">
-                    <a class="link" href="{{url_for('main.search')}}">Search</a>
-                    <a class="link" href="{{url_for('users.account')}}">Account</a>
-                    <a class="link" href="{{url_for('game.joingameroom')}}">Adlib Games</a>
-                    <a class="link" href="{{url_for('game.adlibposts')}}">Read Adlibs</a>
-                    <a class="link" href="{{url_for('game.creategameroom')}}">Start an Adlib Game</a>
-                    <a class="link" href="{{url_for('users.new_post')}}">Create a Post</a>
-                    <a class="link" href="{{url_for('users.logout')}}">Logout</a>
+                    <a class="link" href="{{url_for('main.about')}}">About</a>
+                    <a class="link" href="{{url_for('main.search')}}"><img class="navImage" src="{{url_for('static', filename = 'nav_pics/loupe.png')}}">Search</a>
+                    <span class="linkMenu">
+                        <a class="link" href="{{url_for('game.joingameroom')}}"><img class="navImage" src="{{url_for('static', filename = 'nav_pics/people.png')}}">Adlib Games</a>
+                        <a class="link" href="{{url_for('game.adlibposts')}}">Read Adlibs</a>
+                        <a class="link" href="{{url_for('game.creategameroom')}}">Start an Adlib Game</a>
+                    </span>
+                    <a class="link" href="{{url_for('users.new_post')}}">Post Food Review</a>
+                    <span class="linkMenu">
+                        <a class="link" href="{{url_for('users.account')}}"><img class="navImage" src="{{url_for('static', filename = 'nav_pics/user.png')}}">Edit Account</a>
+                        <a class="link" href="{{url_for('users.logout')}}">Logout</a>
+                    </span>
                 </span>
             {% else %}
                 <span class="logoContainer">
@@ -42,11 +47,16 @@
                     {% endif %}
                 </span>
                 <span class="nonLogoLinks">
-                        <a class="link" href="{{url_for('main.search')}}">Search</a>
-                        <a class="link" href="{{url_for('game.joingameroom')}}">Games</a>
-                        <a class="link" href="{{url_for('game.adlibposts')}}">Read Adlibs</a>
-                        <a class="link" href="{{url_for('users.register')}}">Register</a>
-                        <a class="link" href="{{url_for('users.login')}}">Login</a>
+                    <a class="link" href="{{url_for('main.about')}}">About</a>
+                    <a class="link" href="{{url_for('main.search')}}"><img class="navImage" src="{{url_for('static', filename = 'nav_pics/loupe.png')}}">Search</a>
+                <span class="linkMenu">
+                    <a class="link" href="{{url_for('game.joingameroom')}}"><img class="navImage" src="{{url_for('static', filename = 'nav_pics/people.png')}}">Adlib Games</a>
+                    <a class="link" href="{{url_for('game.adlibposts')}}">Read Adlibs</a>
+                    <a class="link" href="{{url_for('game.creategameroom')}}">Start an Adlib Game</a>
+                </span>
+                <span class="linkMenu">
+                    <a class="link" href="{{url_for('users.register')}}">Register</a>
+                    <a class="link" href="{{url_for('users.login')}}">Login</a>
                 </span>
             {% endif %}
         </section>

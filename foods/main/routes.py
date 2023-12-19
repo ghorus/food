@@ -2,13 +2,18 @@ from geopy.geocoders import Nominatim
 from geopy import distance
 import geocoder
 #flask
-from flask import Blueprint,flash,redirect,render_template,request,send_file,url_for
+from flask import Blueprint,request,render_template,request,send_file,url_for
 from flask_login import current_user
-from flask_socketio import emit, send
+from flask_socketio import emit
 from foods import db,socketio,app
 from foods.models import Food_Post_Upload,Post,Profile_Pic_Upload,User
 from io import BytesIO
 main = Blueprint('main',__name__)
+
+@main.route("/about")
+def about():
+    return render_template('about.html')
+
 
 @main.route("/get_loc")
 def get_loc(locs):

@@ -124,7 +124,7 @@ psutil==5.9.5
 psycopg2-binary==2.9.6
 psycopg2-pool==1.1
 pure-eval==0.2.2
-py2exe==0.13.0.0
+py2exe==0.10.0.2
 pycparser==2.21
 pyee==8.2.2
 pygame==2.5.0

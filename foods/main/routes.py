@@ -1,6 +1,3 @@
-#location features
-import json
-from urllib.request import urlopen
 from geopy.geocoders import Nominatim
 from geopy import distance
 import geocoder

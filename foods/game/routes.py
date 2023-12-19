@@ -137,6 +137,7 @@ def sendGameMessage(data):
                 elif room.turn + 1 <= (len(ms)-1):
                     room.turn += 1
                     db.session.commit()
+                current_member_turn = User.query.filter_by(id=ms[room.turn]).first()
                 emit('turn',current_member_turn.username + "'s turn",room=data['link'],broadcast=True)
     else:
         emit('redirect', url_for('game.joingameroom'))

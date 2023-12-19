@@ -1,10 +1,10 @@
 <section class="allResults">
     {% for result in range(results|length) %}
-    <a href="{{url_for('users.post',post_id=result.id)}}">
+    <a href="{{url_for('users.post',post_id=results[result].id)}}">
         <div class="result">
-            {% if distances[result] %}
+            <!-- {% if distances[result] %}
                 {{distances[result]}} mi away
-            {% endif %}
+            {% endif %} -->
             {% if results[result].uploads %}
                 {% for uploads in results[result].uploads %}
                     <img class="searchPic" src="{{ url_for('main.uploadFood', id=uploads.id) }}" alt="">

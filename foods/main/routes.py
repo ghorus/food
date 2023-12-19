@@ -35,7 +35,6 @@ def get_loc(locs):
             distances.append(dist)
         else:
             distances.append(None)
-            app.logger.warning('no')
     return distances
 
 @main.route("/")
@@ -71,6 +70,7 @@ def search():
 @main.route("/search_result")
 def search_result():
     q = request.args.get('q')
+    distances = None
     if q:
         results = Post.query.filter(Post.name.icontains(q) | Post.address.icontains(q)| Post.category.icontains(q) | Post.title.icontains(q)).all()
         distances = get_loc(results)
